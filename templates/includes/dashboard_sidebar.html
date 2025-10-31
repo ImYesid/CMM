@@ -1,0 +1,72 @@
+{% load static %}
+<!--sidebar wrapper -->
+<div class="sidebar-wrapper" data-simplebar="true">
+    <div class="sidebar-header">
+        <div>
+            <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+        </div>
+        <div>
+            <h4 class="logo-text">CMM</h4>
+        </div>
+        <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
+        </div>
+    </div>
+    <!--navigation-->
+    <ul class="metismenu" id="menu">
+        <li>
+            <a href="{% url 'home' %}">
+                <div class="parent-icon"><i class='fas fa-chart-line'></i></div>
+                <div class="menu-title">Dashboard</div>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="parent-icon"><i class="fas fa-truck-loading"></i>
+                </div>
+                <div class="menu-title">Proveedores</div>
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <div class="parent-icon"><i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="menu-title">Compras</div>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="parent-icon"> <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="menu-title">Movimientos</div>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <div class="parent-icon"><i class='fas fa-cash-register'></i>
+                </div>
+                <div class="menu-title">Ventas</div>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="has-arrow">
+                <div class="parent-icon"><i class="fas fa-wallet"></i>
+                </div>
+                <div class="menu-title">Cuentas</div>
+            </a>
+            <ul>
+                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Ventas</a> </li>
+                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Compras</a> </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">
+                <div class="parent-icon"><i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <div class="menu-title">Nómina</div>
+            </a>
+        </li>
+    </ul>
+    <!--end navigation-->
+</div>
+<!--end sidebar wrapper -->

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- ALERTYFY JS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    </head>
+    <body>
+        
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script>
+            alertify.set('notifier','position', 'top-right');
+        </script> 
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags %}
+                    <script>
+                        {% if message.tags == "success" %}
+                            alertify.success("{{ message }}");
+                        {% elif message.tags == "error" %}
+                            alertify.error("{{ message }}");
+                        {% elif message.tags == "warning" %}
+                            alertify.warning("{{ message }}");
+                        {% elif message.tags == "info" %}
+                            alertify.message("{{ message }}");
+                        {% else %}
+                            alertify.message("{{ message }}"); // Default si no hay etiqueta
+                        {% endif %}
+                    </script>                
+                {% endif %}    
+            {% endfor %}
+        {% endif %} 
+    </body>
+</html>

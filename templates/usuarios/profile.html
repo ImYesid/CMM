@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--start page wrapper -->
+
+{% if perfil %}
+    <div class="page-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Perfil de Usuario</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="bx bx-home-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="container">
+                <div class="main-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column align-items-center text-center">
+                                        <i class="fa-regular fa-id-badge fa-5x"></i>
+                                        <div class="mt-3">
+                                            <h4>{{perfil.full_name}}</h4>
+                                            <p class="text-secondary mb-1">{{perfil.cargo}}</p>
+                                            <p class="text-muted font-size-sm">Ultima inicio de sesión: {{user.last_login}}</p>
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <form method="POST" action="{% url 'update_profile' %}">
+                                {% csrf_token %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Nombre</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input disabled type="text" class="form-control" value="{{perfil.full_name}}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Identificación</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input disabled type="text" class="form-control" value="{{perfil.documento}}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Correo</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="email" class="form-control" name="email" value="{{user.email}}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Celular</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="number" class="form-control" name="telefono" value="{{perfil.telefono}}" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="submit" class="btn btn-primary px-4" value="Guardar Cambios" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="page-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Perfil de Usuario</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="bx bx-home-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <tr>
+                <td colspan="6" class="text-center text-muted">
+                    <i class="bx bx-info-circle" style="font-size: 20px; color: #ff9800;"></i> 
+                    Actualmente no hay un perfil generado en relación al usuario {{user.username}}.
+                </td>
+            </tr>
+        </div>
+    </div>
+{% endif %}
+<!--end page wrapper -->
+{% endblock %}
