@@ -23,7 +23,7 @@
             <a href="#">
                 <div class="parent-icon"><i class="fas fa-truck-loading"></i>
                 </div>
-                <div class="menu-title">Proveedores</div>
+                <div class="menu-title">Activos</div>
             </a>
         </li>
 
@@ -31,39 +31,28 @@
             <a href="#">
                 <div class="parent-icon"><i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="menu-title">Compras</div>
+                <div class="menu-title">Historial</div>
             </a>
         </li>
         <li>
             <a href="#">
                 <div class="parent-icon"> <i class="fas fa-exchange-alt"></i>
                 </div>
-                <div class="menu-title">Movimientos</div>
+                <div class="menu-title">Incidencia</div>
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="{% url 'orden_trabajo' %}">
                 <div class="parent-icon"><i class='fas fa-cash-register'></i>
                 </div>
-                <div class="menu-title">Ventas</div>
+                <div class="menu-title">Ordenes de trabajos</div>
             </a>
-        </li>
-        <li>
-            <a href="#" class="has-arrow">
-                <div class="parent-icon"><i class="fas fa-wallet"></i>
-                </div>
-                <div class="menu-title">Cuentas</div>
-            </a>
-            <ul>
-                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Ventas</a> </li>
-                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Compras</a> </li>
-            </ul>
         </li>
         <li>
             <a href="#">
                 <div class="parent-icon"><i class="fas fa-file-invoice-dollar"></i>
                 </div>
-                <div class="menu-title">Nómina</div>
+                <div class="menu-title">Plan de trabajo</div>
             </a>
         </li>
     </ul>

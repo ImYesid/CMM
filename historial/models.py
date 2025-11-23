@@ -9,8 +9,7 @@ class HistorialGestion(models.Model):
         ('inspeccion', 'Inspección'),
     ]
 
-    id_historia = models.BigAutoField(primary_key=True)
-    activo = models.ForeignKey(Activo, on_delete=models.CASCADE, related_name='historiales')
+    activo = models.ForeignKey(Activo, on_delete=models.CASCADE, related_name='activo_historial')
     fecha_evento = models.DateTimeField()
     mmt_tipo = models.CharField(max_length=20, choices=MMT_TIPO_CHOICES, db_index=True)
     detalle_evento = models.TextField()

@@ -7,8 +7,6 @@ class Activo(models.Model):
         ('mantenimiento', 'En mantenimiento'),
         ('retirado', 'Retirado'),
     ]
-
-    id_activo = models.BigAutoField(primary_key=True)
     codigo = models.CharField(max_length=50, unique=True, db_index=True)
     nombre = models.CharField(max_length=120)
     tipo = models.CharField(max_length=60, db_index=True)
@@ -29,4 +27,4 @@ class Activo(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.code} - {self.name}'
+        return f'{self.codigo} - {self.nombre}'

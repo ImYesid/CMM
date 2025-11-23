@@ -16,8 +16,6 @@ class PlanGestion(models.Model):
         ('anual', 'Anual'),
         ('ciclos', 'Por ciclos/uso'),
     ]
-
-    id_plan = models.BigAutoField(primary_key=True)
     plan_nombre = models.CharField(max_length=120, unique=True, db_index=True)
     frecuencia = models.CharField(max_length=20, choices=FRECUENCIA_CHOICES, db_index=True)
     plan_tipo = models.CharField(max_length=20, choices=PLAN_TIPO_CHOICES, db_index=True)

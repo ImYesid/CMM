@@ -55,7 +55,7 @@
 		<!-- navbar -->
 		{% include 'includes/navbar.html' %}
 
-		<!-- -->
+		<!-- theme -->
 		{% include 'includes/switcher.html' %}
 
 		{% block content %}
@@ -75,7 +75,7 @@
 	<script src="{% static 'plugins/metismenu/js/metisMenu.min.js' %}"></script>
 	<script src="{% static 'plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
 	<script src="{% static 'plugins/apexcharts-bundle/js/apexcharts.min.js' %}"></script>
-	<script src="{% static 'js/dashboard-human-resources.js '%}"></script>
+	<script src="{% static 'js/dashboard-human-resources.js'%}"></script>
 	<script src="{% static 'plugins/chartjs/chart.min.js' %}"></script>
 	<script src="{% static 'plugins/vectormap/jquery-jvectormap-2.0.2.min.js' %}"></script>
 	<script src="{% static 'plugins/vectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
@@ -89,26 +89,23 @@
 	<script src="{% static 'plugins/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
 	<!-- ColReorder -->
 	<script src="https://cdn.datatables.net/colreorder/1.5.0/js/dataTables.colReorder.min.js"></script>
-	<script src="{% static 'js/data_table.js' %}"></script>
-	{% block script %}
-		<!-- script -->
-	{% endblock %}
 
 	<script>
 		$(function () {
 			$(".knob").knob();
 		});
 	</script>
+	
+	{% block script %}
+		<!-- script -->
+	{% endblock %}
+
 	<script src="{% static 'js/index.js' %}"></script>
 	<!--app JS-->
 	<script src="{% static 'js/app.js' %}"></script>
 
-	<script src="{% static 'js/ajax.js' %}"></script>
-
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap4-duallistbox@4.0.2/dist/jquery.bootstrap-duallistbox.min.js"></script>
 	
 </body>

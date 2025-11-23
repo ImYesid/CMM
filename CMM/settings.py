@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios',
+    'activos',
+    'historial',
+    'incidencia',
+    'orden_trabajo',
+    'plan_gestion',
 ]
 
 MIDDLEWARE = [
@@ -118,11 +123,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR /'static'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    'CMM/static',
+    BASE_DIR / 'CMM' / 'static',
 ]
+
+# Solo para producción (cuando uses collectstatic)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # media files configuration
 MEDIA_URL = '/media/'

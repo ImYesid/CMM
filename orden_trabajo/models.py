@@ -10,10 +10,8 @@ class OrdenTrabajo(models.Model):
         ('cerrada', 'Cerrada'),
         ('bloqueada', 'Bloqueada'),
     ]
-
-    id_OT = models.BigAutoField(primary_key=True)
-    activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='ordenes')
-    plan = models.ForeignKey(PlanGestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes')
+    activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='activo_ordenes')
+    plan = models.ForeignKey(PlanGestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='plan_ordenes')
     descripcion_falla = models.TextField()
     acciones = models.TextField(blank=True)
     fecha_inicio = models.DateTimeField()
@@ -33,8 +31,10 @@ class OrdenTrabajo(models.Model):
             models.Index(fields=['plan']),
         ]
         constraints = [
-            models.CheckConstraint(check=models.Q(end_date__gte=models.F('fecha_inicio')) | models.Q(end_date__isnull=True), name='ck_OT_fin_despues_inicio'),
+            models.CheckConstraint(
+                check=models.Q(fecha_fin__gte=models.F('fecha_inicio')) | models.Q(fecha_fin__isnull=True), name='ck_wo_end_after_start'
+            ),
         ]
 
     def __str__(self):
-        return f'OT-{self.id_OT} {self.activo.codigo} ({self.OT_estado})'
+        return f'OT-{self.activo.codigo} ({self.OT_estado})'

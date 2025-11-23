@@ -22,7 +22,7 @@ class LoginForm(forms.ModelForm):
         self.fields['username'] = forms.CharField(
             widget=forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ingresar N° Documento',
+                'placeholder': 'Ingresar Usuario',
                 'id': 'inputDocumento',
                 'required': 'required'
             })   

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from activos.models import Activo
+from orden_trabajo.models import OrdenTrabajo
 
 class Incidencia(models.Model):
     PRIORIDAD_CHOICES = [
@@ -15,14 +16,13 @@ class Incidencia(models.Model):
         ('resuelta', 'Resuelta'),
         ('cancelada', 'Cancelada'),
     ]
-
-    id_incidencia = models.BigAutoField(primary_key=True)
-    activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='incidencias')
+    activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='activo_incidencias')
     descripcion = models.TextField()
     fecha_reporte = models.DateTimeField(auto_now_add=True)
     nivel_prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, db_index=True)
     estado = models.CharField(max_length=12, choices=ESTADO_CHOICES, default='reportada', db_index=True)
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='incidencias_reportadas')
+    OT = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='OT_incidencia')
 
     class Meta:
         verbose_name = 'Incidencia'
@@ -35,4 +35,4 @@ class Incidencia(models.Model):
         ]
 
     def __str__(self):
-        return f'Inc-{self.id_incidencia} {self.activo.codigo} [{self.nivel_prioridad}]'
+        return f'Inc- {self.activo.codigo} [{self.nivel_prioridad}]'
