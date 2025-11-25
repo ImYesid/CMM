@@ -3,5 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('plan_gestion', views.plan_gestion, name='plan_gestion'),
+    path('', views.plan_gestion, name='plan_gestion'),
+    path('/agregar/', views.agregar_plan_tipo, name='agregar_plan_tipo'),
+    path('/editar/<int:plan_id>/', views.editar_plan_tipo, name='editar_plan_tipo'),
 ]

@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		<!--start page wrapper -->
+		<div class="page-wrapper">
+			<div class="page-content">
+				<!--breadcrumb-->
+				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+					<div class="breadcrumb-title pe-3">PLANES DE GESTIÓN</div>
+					<div class="ps-3">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0 p-0">
+								<li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="bx bx-home-alt"></i></a></li>
+								<li class="breadcrumb-item active" aria-current="page">Planes</li>
+							</ol>
+						</nav>
+					</div>
+                    <div class="ms-auto">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="">Añadir</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">	
+                                <a class="dropdown-item" id="" href="#Preventivo">Preventivo</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="" href="#Predictivo">Predictivo</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="" href="#Correctivo">Correctivo</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" id="" href="#Inspección">Inspección</a>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				<!--end breadcrumb-->
+				<div class="row">
+					<div class="col-xl-12 mx-auto">
+						<h6 class="mb-0 text-uppercase">PLANES DE GESTIÓN</h6>
+						<hr/>
+						<div class="card">
+							<div class="card-body">						
+								<br />
+								<!-- SmartWizard html -->
+								<div id="smartwizard" data-id="{{ tab_id }}">
+									<ul class="nav">
+										<li class="nav-item">
+											<a class="nav-link" href="#Preventivo">	<strong>Gestión Preventiva</strong> 
+												<br>Plan de gestión Preventivo
+                                            </a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#Predictivo">	<strong>Gestión Predictivo</strong> 
+												<br>Plan de gestión Predictivo
+                                            </a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#Correctivo">	<strong>Gestión Correctivo</strong> 
+												<br>Plan de gestión Correctivo
+                                            </a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#Inspección">	<strong>Gestión Inspección</strong> 
+												<br>Plan de gestión Inspección
+                                            </a>
+										</li>
+									</ul>
+									<div class="tab-content">
+										<div id="Preventivo" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                                            <div class="d-none d-sm-flex align-items-center mb-3">
+                                                <h3 id="TitlePreventivo">Lista de Plan Preventivo</h3>
+                                                <div class="ms-auto">
+                                                    <div class="btn-group">
+                                                        <button id="btnMostrarPreventivo" class="btn btn-secondary">Añadir</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="ViewPreventivo" style="display: block;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% if planes_preventivos %}
+                                                                        {% for plan in planes_preventivos %}
+                                                                        <tr>
+                                                                            <td>{{ plan.plan_nombre }}</td>
+                                                                            <td>{{ plan.frecuencia }}</td>
+                                                                            <td>{{ plan.descripcion }}</td>
+                                                                            <td class="text-center">
+                                                                                <button class="btn btn-sm btn-info editar-Plan_preventivo" data-id="{{ plan.id }}">
+                                                                                    <i class="bx bx-edit"></i>
+                                                                                </button>                                           
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <tr>
+                                                                            <td colspan="6" class="text-center text-muted">
+                                                                                <i class="bx bx-info-circle" style="font-size: 20px; color: #ff9800;"></i> 
+                                                                                Actualmente no hay Planes de gestion preventivos registrados.
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}  
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+                                            <!-- FORM REGISTER -->
+                                            <div id="AddPreventivo" style="display: none;">
+                                                <div class="card border-top border-0 border-4 border-primary">
+                                                    <div class="card-body p-5">
+                                                        <form id="FormPreventivo" method="POST" class="row g-3 needs-validation" novalidate>
+                                                            {% csrf_token %}
+
+                                                            {% for field in form %}
+                                                                <div class="col-md-6">
+                                                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
+                                                                    {{ field }}
+                                                                    <div class="invalid-feedback">Por favor, ingrese {{ field.label|striptags|lower }}.</div>
+                                                                </div>
+                                                            {% endfor %}
+
+                                                            <div class="col-12">
+                                                                <button id="submitAddPreventivo" type="submit" data-add-url="{% url 'agregar_plan_tipo' %}" class="btn btn-info px-5"
+                                                                style="display: block;">
+                                                                    Registrar
+                                                                </button>
+                                                                <button id="submitEditPreventivo" type="submit" class="btn btn-info px-5" style="display: none;">
+                                                                    <i class="bx bx-save"></i> Guardar
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FORM REGISTER END-->
+										</div>                                       
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end row-->
+			</div>
+		</div>
+		<!--end page wrapper -->
+{% endblock %}
+
+{% load static %}
+
+{% block script %}  
+    <script src="{% static 'js/plan_gestion/plan_gestion.js' %}">
+        
+    </script>
+{% endblock %}
