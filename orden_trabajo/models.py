@@ -37,4 +37,4 @@ class OrdenTrabajo(models.Model):
         ]
 
     def __str__(self):
-        return f'OT-{self.activo.codigo} ({self.OT_estado})'
+        return f'OT{self.id} - {self.activo.codigo} ({self.OT_estado})'

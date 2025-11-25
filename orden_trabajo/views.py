@@ -6,24 +6,43 @@ from .models import *
 
 @login_required(login_url = 'login')
 def orden_trabajo(request):
-    ot     = OrdenTrabajo.objects.all()
-
+    ot = OrdenTrabajo.objects.all()
     return render(request, 'orden_trabajo/orden_trabajo.html', {'ot' : ot} )
 
 @login_required(login_url='login')
 def agregar_orden_trabajo(request):
+
+    temp = request.session.pop('incidencia_temp', None)
+
     if request.method == 'POST':
         form = OrdenTrabajoForm(request.POST)
         if form.is_valid():
+            nueva_ot = form.save()
+            #si veniamos desde incidencia
+            if request.POST.get('action') == 'Agregar desde Incidencia':
+                #se lleva todos los campos llave de la ot
+                data = {
+                    'OT': nueva_ot.id,
+                    'activo':nueva_ot.activo.id,
+                    'descripcion':nueva_ot.descripcion_falla,
+                    'usuario':nueva_ot.usuario.id
+                }
+                request.session['ot_creada'] = data
+                messages.success(request, "OT agregada correctamente.")
+                return redirect('agregar_incidencia')
+        
             form.save()
             messages.success(request, "OT agregada correctamente.")
             return redirect('orden_trabajo')
     else:
-        form = OrdenTrabajoForm()
+        if temp:
+            form = OrdenTrabajoForm(initial=temp)
+        else:
+            form = OrdenTrabajoForm()
 
     context = {
         'form': form, 
-        'accion': 'Agregar'
+        'accion': 'Agregar desde Incidencia' if temp else 'Agregar'
     }
         
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', context)
