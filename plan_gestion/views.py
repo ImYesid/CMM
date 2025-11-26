@@ -46,7 +46,7 @@ def agregar_plan_tipo(request, tipo):
             plan.plan_tipo = tipo
             plan.save()
 
-            OrdenTrabajo.objects.create(
+            ot = OrdenTrabajo.objects.create(
                 activo=plan.activo,
                 plan=plan,
                 descripcion_falla=f"Generada automáticamente desde el plan {plan.plan_nombre}",
@@ -61,6 +61,14 @@ def agregar_plan_tipo(request, tipo):
                 mmt_tipo=plan.plan_tipo,
                 referencia_id=plan.id,
                 detalle_evento=f"Se creó el plan {plan.plan_tipo} '{plan.plan_nombre}'",
+                usuario=request.user
+            )
+
+            HistorialGestion.objects.create(
+                activo=ot.activo,
+                mmt_tipo=plan.plan_tipo,
+                referencia_id=ot.id,
+                detalle_evento=f"Se creó la OT {ot.codigo} vinculada al plan {plan.plan_nombre}",
                 usuario=request.user
             )
 
