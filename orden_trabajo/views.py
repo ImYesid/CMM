@@ -20,31 +20,34 @@ def agregar_orden_trabajo(request):
     if request.method == 'POST':
         form = OrdenTrabajoForm(request.POST)
         if form.is_valid():
-            nueva_ot = form.save()
+            orden = form.save() 
             #si veniamos desde incidencia
             if request.POST.get('action') == 'Agregar desde Incidencia':
                 #se lleva todos los campos llave de la ot
                 data = {
-                    'OT': nueva_ot.id,
-                    'activo':nueva_ot.activo.id,
-                    'descripcion':nueva_ot.descripcion_falla,
-                    'usuario':nueva_ot.usuario.id
+                    'OT': orden.id,
+                    'activo':orden.activo.id,
+                    'descripcion':orden.descripcion_falla,
+                    'usuario':orden.usuario.id
                 }
                 request.session['ot_creada'] = data
                 messages.success(request, "OT agregada correctamente.")
                 return redirect('agregar_incidencia')
-        
-            form.save()
-            messages.success(request, "OT agregada correctamente.")
-            return redirect('orden_trabajo')
+
+            HistorialGestion.objects.create(
+                activo=orden.activo,
+                mmt_tipo=orden.plan.plan_tipo if orden.plan else 'correctivo',
+                referencia_id=orden.id,
+                detalle_evento=f"Se creó la OT {orden.codigo}",
+                usuario=request.user
+            )
+
+            return JsonResponse({"success": True, "message": "OT generada correctamente"})
     else:
-        if temp:
-            form = OrdenTrabajoForm(initial=temp)
-        else:
-            form = OrdenTrabajoForm()
+        form = OrdenTrabajoForm(initial=temp) if temp else OrdenTrabajoForm()
 
     context = {
-        'form': form, 
+        'form': form,
         'accion': 'Agregar desde Incidencia' if temp else 'Agregar',
         'now': timezone.now()
     }
@@ -65,26 +68,3 @@ def editar_orden_trabajo(request, id_OT):
         form = OrdenTrabajoForm(instance=ot)
     
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', {'form': form, 'accion': 'Editar'})
-
-def agregar_historial_orden_trabajo(request):
-    if request.method == "POST":
-        form = OrdenTrabajoForm(request.POST)
-        if form.is_valid():
-            orden = form.save() 
-
-            HistorialGestion.objects.create(
-                activo=orden.activo,
-                mmt_tipo=orden.plan,
-                referencia_id=orden.id,
-                descripcion=f"Se creó la OT {orden.codigo}",
-                responsable=request.user
-            )
-
-            return JsonResponse({"success": True, "message": "OT generada correctamente"})
-        else:
-            print(form.errors)
-            return JsonResponse({"success": False, "message": "Error en el formulario", "errors": form.errors})
-    
-    else:
-        form = OrdenTrabajoForm()
-        return render(request, "orden_trabajo/orden_trabajo.html", {"form": form})

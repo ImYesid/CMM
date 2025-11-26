@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from activos.models import Activo
 
 class HistorialGestion(models.Model):
@@ -14,7 +15,7 @@ class HistorialGestion(models.Model):
     referencia_id = models.PositiveIntegerField() # Código del plan u OT
     mmt_tipo = models.CharField(max_length=20, choices=MMT_TIPO_CHOICES, db_index=True, verbose_name="Tipo de mantenimiento")
     detalle_evento = models.TextField(verbose_name="Detalle del evento")
-    responsable = models.CharField(max_length=120, verbose_name="Responsable")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='historial_user')
 
     class Meta:
         verbose_name = 'Historial de gestión'
