@@ -9,11 +9,12 @@ class HistorialGestion(models.Model):
         ('inspeccion', 'Inspección'),
     ]
 
-    activo = models.ForeignKey(Activo, on_delete=models.CASCADE, related_name='activo_historial')
-    fecha_evento = models.DateTimeField()
-    mmt_tipo = models.CharField(max_length=20, choices=MMT_TIPO_CHOICES, db_index=True)
-    detalle_evento = models.TextField()
-    responsable = models.CharField(max_length=120)
+    activo = models.ForeignKey(Activo, on_delete=models.CASCADE, related_name='activo_historial', verbose_name="Activo")
+    fecha_evento = models.DateTimeField(auto_now_add=True)
+    referencia_id = models.PositiveIntegerField() # Código del plan u OT
+    mmt_tipo = models.CharField(max_length=20, choices=MMT_TIPO_CHOICES, db_index=True, verbose_name="Tipo de mantenimiento")
+    detalle_evento = models.TextField(verbose_name="Detalle del evento")
+    responsable = models.CharField(max_length=120, verbose_name="Responsable")
 
     class Meta:
         verbose_name = 'Historial de gestión'

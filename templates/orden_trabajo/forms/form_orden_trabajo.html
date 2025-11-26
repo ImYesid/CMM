@@ -34,6 +34,12 @@
                     <form method="POST" class="row g-3 needs-validation" novalidate>
                         {% csrf_token %}
 
+                        <div class="col-md-6">
+                            <label class="form-label"><strong>Código</strong></label>
+                            <input type="text" class="form-control" value="OT-{{ now|date:'Y' }}-XXXX" disabled>
+                            <div class="form-text">Este número se asignará automáticamente al guardar.</div>
+                        </div>
+
                         {% for field in form %}
                             <div class="col-md-6">
                                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>

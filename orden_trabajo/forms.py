@@ -18,8 +18,11 @@ class OrdenTrabajoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs.update({'class': 'form-control'})
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': f"Ingrese {field.label if field.label else field_name.lower()}"
+                })
         
             # Etiqueta en negrita con asterisco si es requerido
             if field.required:

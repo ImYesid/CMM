@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
+from django.http import JsonResponse
+from historial.models import HistorialGestion
 from .forms import *
 from .models import *
 
@@ -42,7 +45,8 @@ def agregar_orden_trabajo(request):
 
     context = {
         'form': form, 
-        'accion': 'Agregar desde Incidencia' if temp else 'Agregar'
+        'accion': 'Agregar desde Incidencia' if temp else 'Agregar',
+        'now': timezone.now()
     }
         
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', context)
@@ -62,3 +66,25 @@ def editar_orden_trabajo(request, id_OT):
     
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', {'form': form, 'accion': 'Editar'})
 
+def agregar_historial_orden_trabajo(request):
+    if request.method == "POST":
+        form = OrdenTrabajoForm(request.POST)
+        if form.is_valid():
+            orden = form.save() 
+
+            HistorialGestion.objects.create(
+                activo=orden.activo,
+                mmt_tipo=orden.plan,
+                referencia_id=orden.id,
+                descripcion=f"Se creó la OT {orden.codigo}",
+                responsable=request.user
+            )
+
+            return JsonResponse({"success": True, "message": "OT generada correctamente"})
+        else:
+            print(form.errors)
+            return JsonResponse({"success": False, "message": "Error en el formulario", "errors": form.errors})
+    
+    else:
+        form = OrdenTrabajoForm()
+        return render(request, "orden_trabajo/orden_trabajo.html", {"form": form})

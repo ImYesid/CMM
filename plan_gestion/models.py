@@ -1,4 +1,5 @@
 from django.db import models
+from activos.models import Activo
 
 class PlanGestion(models.Model):
     PLAN_TIPO_CHOICES = [
@@ -16,10 +17,16 @@ class PlanGestion(models.Model):
         ('anual', 'Anual'),
         ('ciclos', 'Por ciclos/uso'),
     ]
+    PLAN_ESTADO_CHOICES = [
+        ('habilitado', 'Habilitado'),
+        ('deshabilitado', 'Deshabilitado'),
+    ]
+    activo = models.ForeignKey(Activo, on_delete=models.CASCADE, related_name="planes_activos")
     plan_nombre = models.CharField(max_length=120, unique=True, db_index=True)
     frecuencia = models.CharField(max_length=20, choices=FRECUENCIA_CHOICES, db_index=True)
     plan_tipo = models.CharField(max_length=20, choices=PLAN_TIPO_CHOICES, db_index=True)
     descripcion = models.TextField(blank=True)
+    estado = models.CharField(max_length=20, choices=PLAN_ESTADO_CHOICES, default="habilitado")
 
     class Meta:
         verbose_name = 'Plan de gestión'

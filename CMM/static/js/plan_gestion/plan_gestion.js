@@ -1,13 +1,16 @@
+function getCSRFToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
 let smartwizard = document.getElementById("smartwizard");
 let dataId = smartwizard.getAttribute("data-id");
 
 //DINAMICA DEL SMARTWIZARD
 const Preventivo ="Preventivo";
-const arl = "ARL";
-const pension = "PENSION";
-const caja = "CAJA";
+const Predictivo = "Predictivo";
+const Correctivo = "Correctivo";
+const Inspeccion = "Inspeccion";
 
-var steps = [Preventivo, arl, pension, caja];
+var steps = [Preventivo, Predictivo, Correctivo, Inspeccion];
 var step = steps.indexOf(dataId);
 if (step === -1) {
     step = 0;
@@ -43,8 +46,7 @@ function Div_dynamic(aux_temporal, accion) {
             View.style.transition = "opacity 0.5s ease-in-out";
         }, 100);
 
-        changeTabID(aux_temporal);
-
+        changeTabID(aux)
         
         $("#smartwizard").smartWizard("reset"); // Resetea el wizard
         $("#smartwizard").smartWizard("goToStep", stepNow); // Vuelve al paso guardado
@@ -69,7 +71,7 @@ function Div_dynamic(aux_temporal, accion) {
             Add.style.transition = "opacity 0.5s ease-in-out";
         }, 100);
 
-        changeTabID(aux_temporal);
+        changeTabID(aux)
 
         $('#smartwizard').smartWizard("reset");
         $("#smartwizard").smartWizard("goToStep", stepNow); // Vuelve al paso guardado
@@ -77,8 +79,8 @@ function Div_dynamic(aux_temporal, accion) {
     }
 };
 
-//DETONANTE DE VIEWS "add" SEGURIDAD SOCIAL CON EL FORM
-function ViewAdd(form, submit) {
+//DETONANTE DE VIEWS "Agregar/Add" CON EL FORM
+function ViewAdd(form, aux, submit) {
     
     form.addEventListener('submit', function(event) {
         event.preventDefault(); // ¡PREVENIR EL ENVÍO NORMAL DEL FORMULARIO!
@@ -94,7 +96,7 @@ function ViewAdd(form, submit) {
             method: 'POST',
             body: formData,
             headers: {
-                "X-CSRFToken": csrfToken
+                "X-CSRFToken": getCSRFToken() 
             }
         })
         .then(response => {
@@ -106,7 +108,9 @@ function ViewAdd(form, submit) {
         .then(data => {
             if (data.success) {
                 Swal.fire("Agregado", data.message, "success")
-                    .then(() => location.reload());
+                    .then(()=> {
+                        window.location.href = `/planes/${aux}/`;
+                    });
             } else {
                 Swal.fire("Error", data.message, "error");
             }
@@ -118,29 +122,23 @@ function ViewAdd(form, submit) {
     });
 }
 
-// Limpiar todos los campos del formulario
-function CleanField(form) {
-    form.querySelectorAll("input, select, textarea").forEach(field => {
-        field.value = "";
-    });
-};
-
 //DETONANTE DE VIEWS "edit"
 function ViewField(id) {
+    const aux = window.location.hash.replace("#", "");
+    const form = document.getElementById(`Form${aux}`);
 
-    fetch(`/editar/${id}/`)
+    fetch(`/planes/editar/${id}/`)
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log("Datos recibidos:", data.data); // Para depurar en la consola
+            console.log("Datos recibidos:", data.data);
 
-            // Asigna los valores correctamente al formulario
             Object.keys(data.data).forEach(field => {
-                let input = document.querySelector(`[name="${field}"]`);
+                let input = form.querySelector(`[name="${field}"]`);
                 if (input) {
                     input.value = data.data[field];
                 } else {
-                    console.warn(`Campo '${field}' no encontrado en el formulario.`);
+                    console.warn(`Campo '${field}' no encontrado en el formulario ${aux}.`);
                 }
             });
         } else {
@@ -150,22 +148,21 @@ function ViewField(id) {
     .catch(error => console.error("Error en la solicitud AJAX:", error));
 }
 
-//DETONANTE DE VIEWS "edit" SEGURIDAD SOCIAL CON EL FORM
-function ViewEdit(form, id) {
-    
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // ¡PREVENIR EL ENVÍO NORMAL DEL FORMULARIO!
 
-        const addUrl = `/editar/${id}/`;
-        if (!addUrl) {
-            console.error("URL no definida en el botón.");
-            return;
-        }
-        // Obtener los datos del formulario
+//DETONANTE DE VIEWS "Editar/Edit" CON EL FORM
+function ViewEdit(form, id) {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const editUrl = `/planes/editar/${id}/`;  // ← URL corregida
         const formData = new FormData(form);
-        fetch(addUrl, {
+
+        fetch(editUrl, {
             method: 'POST',
             body: formData,
+            headers: {
+                "X-CSRFToken": getCSRFToken() 
+            }
         })
         .then(response => {
             if (!response.ok) {
@@ -175,8 +172,8 @@ function ViewEdit(form, id) {
         })
         .then(data => {
             if (data.success) {
-                Swal.fire("Agregado", data.message, "success")
-                    .then(() => location.reload());
+                Swal.fire("Actualizado", data.message, "success")
+                    .then(() => window.location.href = `/planes/${aux}/`);
             } else {
                 Swal.fire("Error", data.message, "error");
             }
@@ -188,6 +185,14 @@ function ViewEdit(form, id) {
     });
 }
 
+
+// Limpiar todos los campos del formulario
+function CleanField(form) {
+    form.querySelectorAll("input, textarea").forEach(field => {
+        field.value = "";
+    });
+};
+
 //Cambio de Paso en el SmartWizard dinamico
 function changeTabID(aux_temporal) {
     let nuevaURL = new URL(window.location.href);
@@ -195,7 +200,7 @@ function changeTabID(aux_temporal) {
     window.history.pushState(null, "", nuevaURL.toString());
 }
 
-//VISUALIZACION DINAMICA DE SUBMIT EN EL FORM
+//VISUALIZACION DINAMICA DE SUBMIT EN EL FORM (Agregar/Editar)
 function submitAdd(aux){
     let Add = document.getElementById(`submitAdd${aux}`);
     let Edit = document.getElementById(`submitEdit${aux}`);
@@ -235,7 +240,7 @@ function submitEdit(aux){
 //FUNCIONES CRUD
 document.addEventListener("DOMContentLoaded", function () {
 
-    ///EPS
+    ///PLAN PREVENTIVO
     document.getElementById("btnMostrarPreventivo").addEventListener("click", function(event) {
         if (event.type === "click") {
             aux = window.location.hash // Captura el ID del paso smartwizard
@@ -245,10 +250,11 @@ document.addEventListener("DOMContentLoaded", function () {
             //REGISTRAR FORM
             const form = document.getElementById(`Form${aux}`)
             const submit = document.getElementById(`submitAdd${aux}`)
-            CleanField(form)
+            
             submitAdd(aux)
             Div_dynamic(aux, "Registrar ")
-            ViewAdd(form, submit)
+            CleanField(form)
+            ViewAdd(form, aux, submit)
         }
     });
 
@@ -259,20 +265,19 @@ document.addEventListener("DOMContentLoaded", function () {
             changeTabID(aux)
 
             //EDITAR
-            let id = this.getAttribute("data-id")
+            const id = this.getAttribute("data-id")
             const form = document.getElementById(`Form${aux}`)
             
             submitEdit(aux)
-            Div_dynamic(aux, "EDITAR ")
+            Div_dynamic(aux, "Editar ")
             ViewField(id)
             ViewEdit(form, id)
 
         });
     });
 
-
-    ///ARL
-    document.getElementById("btnMostrarARL").addEventListener("click", function(event) {
+    ///PLAN PREDICTIVO
+    document.getElementById("btnMostrarPredictivo").addEventListener("click", function(event) {
         if (event.type === "click") {
             aux = window.location.hash // Captura el ID del paso smartwizard
             aux = aux.replace("#", "") // Elimina el símbolo "#"
@@ -284,43 +289,30 @@ document.addEventListener("DOMContentLoaded", function () {
             CleanField(form)
             submitAdd(aux)
             Div_dynamic(aux, "Registrar ")
-            ViewAdd(form, submit)
+            ViewAdd(form, aux, submit)
         }
     });
 
-    document.querySelectorAll(".editar-ARL").forEach(button => {
+    document.querySelectorAll(".editar-Predictivo").forEach(button => {
         button.addEventListener("click", function () {
             aux = window.location.hash // Captura el ID del paso smartwizard
             aux = aux.replace("#", "") // Elimina el símbolo "#"
             changeTabID(aux)
 
             //EDITAR
-            let id = this.getAttribute("data-id")
+            const id = this.getAttribute("data-id")
             const form = document.getElementById(`Form${aux}`)
             
             submitEdit(aux)
-            Div_dynamic(aux, "EDITAR ")
+            Div_dynamic(aux, "Editar ")
             ViewField(id)
             ViewEdit(form, id)
 
         });
     });
 
-    document.querySelectorAll(".delete-arl").forEach(button => {
-        button.addEventListener("click", function () {
-            aux = window.location.hash // Captura el ID del paso smartwizard
-            aux = aux.replace("#", "") // Elimina el símbolo "#"
-            changeTabID(aux)
-
-            let id = this.getAttribute("data-id")
-            
-            ViewDelete(aux, id)
-
-        });
-    });
-
-    ///PENSION
-    document.getElementById("btnMostrarPENSION").addEventListener("click", function(event) {
+    ///PLAN PREDICTIVO
+    document.getElementById("btnMostrarCorrectivo").addEventListener("click", function(event) {
         if (event.type === "click") {
             aux = window.location.hash // Captura el ID del paso smartwizard
             aux = aux.replace("#", "") // Elimina el símbolo "#"
@@ -332,46 +324,33 @@ document.addEventListener("DOMContentLoaded", function () {
             CleanField(form)
             submitAdd(aux)
             Div_dynamic(aux, "Registrar ")
-            ViewAdd(form, submit)
+            ViewAdd(form, aux, submit)
         }
     });
 
-    document.querySelectorAll(".editar-PENSION").forEach(button => {
+    document.querySelectorAll(".editar-Correctivo").forEach(button => {
         button.addEventListener("click", function () {
             aux = window.location.hash // Captura el ID del paso smartwizard
             aux = aux.replace("#", "") // Elimina el símbolo "#"
             changeTabID(aux)
 
             //EDITAR
-            let id = this.getAttribute("data-id")
+            const id = this.getAttribute("data-id")
             const form = document.getElementById(`Form${aux}`)
             
             submitEdit(aux)
-            Div_dynamic(aux, "EDITAR ")
+            Div_dynamic(aux, "Editar ")
             ViewField(id)
             ViewEdit(form, id)
 
         });
     });
 
-    document.querySelectorAll(".delete-pension").forEach(button => {
-        button.addEventListener("click", function () {
-            aux = window.location.hash // Captura el ID del paso smartwizard
-            aux = aux.replace("#", "") // Elimina el símbolo "#"
-            changeTabID(aux)
-
-            let id = this.getAttribute("data-id")
-            
-            ViewDelete(aux, id)
-
-        });
-    });
-
-    ///CAJA
-    document.getElementById("btnMostrarCAJA").addEventListener("click", function(event) {
+    ///PLAN INSPECCION
+    document.getElementById("btnMostrarInspeccion").addEventListener("click", function(event) {
         if (event.type === "click") {
             aux = window.location.hash // Captura el ID del paso smartwizard
-            aux = aux.replace("#", ""); // Elimina el símbolo "#"
+            aux = aux.replace("#", "") // Elimina el símbolo "#"
             changeTabID(aux)
 
             //REGISTRAR FORM
@@ -380,37 +359,24 @@ document.addEventListener("DOMContentLoaded", function () {
             CleanField(form)
             submitAdd(aux)
             Div_dynamic(aux, "Registrar ")
-            ViewAdd(form, submit)
+            ViewAdd(form, aux, submit)
         }
     });
 
-    document.querySelectorAll(".editar-CAJA").forEach(button => {
+    document.querySelectorAll(".editar-Inspeccion").forEach(button => {
         button.addEventListener("click", function () {
             aux = window.location.hash // Captura el ID del paso smartwizard
             aux = aux.replace("#", "") // Elimina el símbolo "#"
             changeTabID(aux)
 
             //EDITAR
-            let id = this.getAttribute("data-id")
+            const id = this.getAttribute("data-id")
             const form = document.getElementById(`Form${aux}`)
             
             submitEdit(aux)
-            Div_dynamic(aux, "EDITAR ")
+            Div_dynamic(aux, "Editar ")
             ViewField(id)
             ViewEdit(form, id)
-
-        });
-    });
-
-    document.querySelectorAll(".delete-caja").forEach(button => {
-        button.addEventListener("click", function () {
-            aux = window.location.hash // Captura el ID del paso smartwizard
-            aux = aux.replace("#", "") // Elimina el símbolo "#"
-            changeTabID(aux)
-
-            let id = this.getAttribute("data-id")
-            
-            ViewDelete(aux, id)
 
         });
     });

@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('Historial', views.historial, name='historial'),
+    path('Historial', views.trazabilidad_historial, name='historial'),
 ]

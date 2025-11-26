@@ -21,42 +21,44 @@
         </li>
         <li>
             <a href="{% url 'activos' %}">
-                <div class="parent-icon"><i class="fas fa-truck-loading"></i>
+                <div class="parent-icon"><i class="fab fa-pushed"></i>
                 </div>
                 <div class="menu-title">Activos</div>
             </a>
         </li>
 
         <li>
-            <a href="#">
-                <div class="parent-icon"><i class="fas fa-shopping-cart"></i>
+            <a href="{% url 'historial' %}">
+                <div class="parent-icon"><i class="fas fa-book-medical"></i>
                 </div>
                 <div class="menu-title">Historial</div>
             </a>
         </li>
         <li>
             <a href="{% url 'incidencias' %}">
-                <div class="parent-icon"> <i class="fas fa-exchange-alt"></i>
+                <div class="parent-icon"> <i class="fas fa-exclamation-circle"></i>
                 </div>
                 <div class="menu-title">Incidencia</div>
             </a>
         </li>
         <li>
             <a href="{% url 'orden_trabajo' %}">
-                <div class="parent-icon"><i class='fas fa-cash-register'></i>
+                <div class="parent-icon"><i class="fas fa-briefcase"></i>
                 </div>
                 <div class="menu-title">Ordenes de trabajos</div>
             </a>
         </li>
         <li>
             <a href="#" class="has-arrow">
-                <div class="parent-icon"><i class="fas fa-wallet"></i>
+                <div class="parent-icon"><i class="fas fa-columns"></i>
                 </div>
                 <div class="menu-title">Plan de trabajo</div>
             </a>
             <ul>
-                <li> <a href="{% url 'plan_gestion' %}"><i class="bx bx-right-arrow-alt"></i>Gestión Preventiva</a> </li>
-                <li> <a href="{% url 'plan_gestion' %}"><i class="bx bx-right-arrow-alt"></i>Gestión Predictiva</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Preventivo' %}"><i class="bx bx-right-arrow-alt"></i>Gestión Preventiva</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Predictivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Predictiva</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Correctivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Correctivo</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Inspeccion'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Inspección</a> </li>
             </ul>
         </li>
     </ul>

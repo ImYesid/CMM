@@ -26,7 +26,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" id="" href="#Correctivo">Correctivo</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" id="" href="#Inspección">Inspección</a>
+                                <a class="dropdown-item" id="" href="#Inspeccion">Inspección</a>
                             </div>
                         </div>
                     </div>
@@ -58,12 +58,13 @@
                                             </a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link" href="#Inspección">	<strong>Gestión Inspección</strong> 
+											<a class="nav-link" href="#Inspeccion">	<strong>Gestión Inspección</strong> 
 												<br>Plan de gestión Inspección
                                             </a>
 										</li>
 									</ul>
 									<div class="tab-content">
+                                        <!-- PLAN PREVENTIVO -->
 										<div id="Preventivo" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                             <div class="d-none d-sm-flex align-items-center mb-3">
                                                 <h3 id="TitlePreventivo">Lista de Plan Preventivo</h3>
@@ -83,6 +84,7 @@
                                                                         <th>Nombre</th>
                                                                         <th>Frecuencia</th>
                                                                         <th>Descripcion</th>
+                                                                        <th>Estado</th>
                                                                         <th>Acciones</th>
                                                                     </tr>
                                                                 </thead>
@@ -93,8 +95,9 @@
                                                                             <td>{{ plan.plan_nombre }}</td>
                                                                             <td>{{ plan.frecuencia }}</td>
                                                                             <td>{{ plan.descripcion }}</td>
+                                                                            <td>{{ plan.estado }}</td>
                                                                             <td class="text-center">
-                                                                                <button class="btn btn-sm btn-info editar-Plan_preventivo" data-id="{{ plan.id }}">
+                                                                                <button class="btn btn-sm btn-info editar-Preventivo" data-id="{{ plan.id }}">
                                                                                     <i class="bx bx-edit"></i>
                                                                                 </button>                                           
                                                                             </td>
@@ -114,6 +117,7 @@
                                                                         <th>Nombre</th>
                                                                         <th>Frecuencia</th>
                                                                         <th>Descripcion</th>
+                                                                        <th>Estado</th>
                                                                         <th>Acciones</th>
                                                                     </tr>
                                                                 </tfoot>
@@ -130,16 +134,18 @@
                                                         <form id="FormPreventivo" method="POST" class="row g-3 needs-validation" novalidate>
                                                             {% csrf_token %}
 
-                                                            {% for field in form %}
+                                                            {% for field in forms_por_tipo.Preventivo %}
                                                                 <div class="col-md-6">
                                                                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
                                                                     {{ field }}
-                                                                    <div class="invalid-feedback">Por favor, ingrese {{ field.label|striptags|lower }}.</div>
+                                                                    <div class="invalid-feedback">
+                                                                        Por favor, ingrese {{ field.label|striptags|lower }}.
+                                                                    </div>
                                                                 </div>
                                                             {% endfor %}
 
                                                             <div class="col-12">
-                                                                <button id="submitAddPreventivo" type="submit" data-add-url="{% url 'agregar_plan_tipo' %}" class="btn btn-info px-5"
+                                                                <button id="submitAddPreventivo" type="submit" data-add-url="{% url 'agregar_plan_tipo' 'Preventivo' %}" class="btn btn-info px-5"
                                                                 style="display: block;">
                                                                     Registrar
                                                                 </button>
@@ -153,7 +159,299 @@
                                                 </div>
                                             </div>
                                             <!-- FORM REGISTER END-->
-										</div>                                       
+										</div>      
+                                        
+                                        <!-- PLAN PREDICTIVO -->
+                                         <div id="Predictivo" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                                            <div class="d-none d-sm-flex align-items-center mb-3">
+                                                <h3 id="TitlePredictivo">Lista de Plan Predictivo</h3>
+                                                <div class="ms-auto">
+                                                    <div class="btn-group">
+                                                        <button id="btnMostrarPredictivo" class="btn btn-secondary">Añadir</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="ViewPredictivo" style="display: block;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% if planes_predictivos %}
+                                                                        {% for plan in planes_predictivos %}
+                                                                        <tr>
+                                                                            <td>{{ plan.plan_nombre }}</td>
+                                                                            <td>{{ plan.frecuencia }}</td>
+                                                                            <td>{{ plan.descripcion }}</td>
+                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td class="text-center">
+                                                                                <button class="btn btn-sm btn-info editar-Predictivo" data-id="{{ plan.id }}">
+                                                                                    <i class="bx bx-edit"></i>
+                                                                                </button>                                           
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <tr>
+                                                                            <td colspan="6" class="text-center text-muted">
+                                                                                <i class="bx bx-info-circle" style="font-size: 20px; color: #ff9800;"></i> 
+                                                                                Actualmente no hay Planes de gestion predictivos registrados.
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}  
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+                                            <!-- FORM REGISTER -->
+                                            <div id="AddPredictivo" style="display: none;">
+                                                <div class="card border-top border-0 border-4 border-primary">
+                                                    <div class="card-body p-5">
+                                                        <form id="FormPredictivo" method="POST" class="row g-3 needs-validation" novalidate>
+                                                            {% csrf_token %}
+
+                                                            {% for field in forms_por_tipo.Predictivo %}
+                                                                <div class="col-md-6">
+                                                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
+                                                                    {{ field }}
+                                                                    <div class="invalid-feedback">
+                                                                        Por favor, ingrese {{ field.label|striptags|lower }}.
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+
+                                                            <div class="col-12">
+                                                                <button id="submitAddPredictivo" type="submit" data-add-url="{% url 'agregar_plan_tipo' 'Predictivo' %}" class="btn btn-info px-5"
+                                                                style="display: block;">
+                                                                    Registrar
+                                                                </button>
+                                                                <button id="submitEditPredictivo" type="submit" class="btn btn-info px-5" style="display: none;">
+                                                                    <i class="bx bx-save"></i> Guardar
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FORM REGISTER END-->
+										</div>
+                                        
+                                        <!-- PLAN CORRECTIVO -->
+                                         <div id="Correctivo" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                                            <div class="d-none d-sm-flex align-items-center mb-3">
+                                                <h3 id="TitleCorrectivo">Lista de Plan Correctivo</h3>
+                                                <div class="ms-auto">
+                                                    <div class="btn-group">
+                                                        <button id="btnMostrarCorrectivo" class="btn btn-secondary">Añadir</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="ViewCorrectivo" style="display: block;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% if planes_correctivos %}
+                                                                        {% for plan in planes_correctivos %}
+                                                                        <tr>
+                                                                            <td>{{ plan.plan_nombre }}</td>
+                                                                            <td>{{ plan.frecuencia }}</td>
+                                                                            <td>{{ plan.descripcion }}</td>
+                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td class="text-center">
+                                                                                <button class="btn btn-sm btn-info editar-Correctivo" data-id="{{ plan.id }}">
+                                                                                    <i class="bx bx-edit"></i>
+                                                                                </button>                                           
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <tr>
+                                                                            <td colspan="6" class="text-center text-muted">
+                                                                                <i class="bx bx-info-circle" style="font-size: 20px; color: #ff9800;"></i> 
+                                                                                Actualmente no hay Planes de gestion correctivos registrados.
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}  
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+                                            <!-- FORM REGISTER -->
+                                            <div id="AddCorrectivo" style="display: none;">
+                                                <div class="card border-top border-0 border-4 border-primary">
+                                                    <div class="card-body p-5">
+                                                        <form id="FormCorrectivo" method="POST" class="row g-3 needs-validation" novalidate>
+                                                            {% csrf_token %}
+
+                                                            {% for field in forms_por_tipo.Correctivo %}
+                                                                <div class="col-md-6">
+                                                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
+                                                                    {{ field }}
+                                                                    <div class="invalid-feedback">
+                                                                        Por favor, ingrese {{ field.label|striptags|lower }}.
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+
+                                                            <div class="col-12">
+                                                                <button id="submitAddCorrectivo" type="submit" data-add-url="{% url 'agregar_plan_tipo' 'Correctivo' %}" class="btn btn-info px-5"
+                                                                style="display: block;">
+                                                                    Registrar
+                                                                </button>
+                                                                <button id="submitEditCorrectivo" type="submit" class="btn btn-info px-5" style="display: none;">
+                                                                    <i class="bx bx-save"></i> Guardar
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FORM REGISTER END-->
+										</div>
+
+                                        <!-- PLAN INSPECCION -->
+                                         <div id="Inspeccion" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                                            <div class="d-none d-sm-flex align-items-center mb-3">
+                                                <h3 id="TitleInspeccion">Lista de Plan Inspección</h3>
+                                                <div class="ms-auto">
+                                                    <div class="btn-group">
+                                                        <button id="btnMostrarInspeccion" class="btn btn-secondary">Añadir</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="ViewInspeccion" style="display: block;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% if planes_inspeccion %}
+                                                                        {% for plan in planes_inspeccion %}
+                                                                        <tr>
+                                                                            <td>{{ plan.plan_nombre }}</td>
+                                                                            <td>{{ plan.frecuencia }}</td>
+                                                                            <td>{{ plan.descripcion }}</td>
+                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td class="text-center">
+                                                                                <button class="btn btn-sm btn-info editar-Inspeccion" data-id="{{ plan.id }}">
+                                                                                    <i class="bx bx-edit"></i>
+                                                                                </button>                                           
+                                                                            </td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <tr>
+                                                                            <td colspan="6" class="text-center text-muted">
+                                                                                <i class="bx bx-info-circle" style="font-size: 20px; color: #ff9800;"></i> 
+                                                                                Actualmente no hay Planes de gestion inspeccion registrados.
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}  
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Frecuencia</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Estado</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+                                            <!-- FORM REGISTER -->
+                                            <div id="AddInspeccion" style="display: none;">
+                                                <div class="card border-top border-0 border-4 border-primary">
+                                                    <div class="card-body p-5">
+                                                        <form id="FormInspeccion" method="POST" class="row g-3 needs-validation" novalidate>
+                                                            {% csrf_token %}
+
+                                                            {% for field in forms_por_tipo.Inspeccion %}
+                                                                <div class="col-md-6">
+                                                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
+                                                                    {{ field }}
+                                                                    <div class="invalid-feedback">
+                                                                        Por favor, ingrese {{ field.label|striptags|lower }}.
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+
+                                                            <div class="col-12">
+                                                                <button id="submitAddInspeccion" type="submit" data-add-url="{% url 'agregar_plan_tipo' 'Inspeccion' %}" class="btn btn-info px-5"
+                                                                style="display: block;">
+                                                                    Registrar
+                                                                </button>
+                                                                <button id="submitEditInspeccion" type="submit" class="btn btn-info px-5" style="display: none;">
+                                                                    <i class="bx bx-save"></i> Guardar
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FORM REGISTER END-->
+										</div>    
+
 									</div>
 								</div>
 							</div>
