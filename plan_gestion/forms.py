@@ -5,7 +5,7 @@ from .models import *
 class PlanGestionForm(forms.ModelForm):
     class Meta:
         model = PlanGestion
-        fields = ['activo', 'plan_nombre', 'frecuencia', 'estado', 'descripcion', 'plan_tipo']
+        fields = ['activo', 'plan_nombre', 'plan_tipo', 'estado', 'descripcion', 'frecuencia']
 
     def __init__(self, *args, **kwargs):
         plan_tipo_fijo = kwargs.pop('plan_tipo_fijo', None)

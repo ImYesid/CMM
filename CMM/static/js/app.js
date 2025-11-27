@@ -1,5 +1,17 @@
 $(function() {
 	"use strict";
+
+	const forms = document.querySelectorAll('.needs-validation')
+	Array.from(forms).forEach(function (form) {
+		form.addEventListener('submit', function (event) {
+		if (!form.checkValidity()) {
+			event.preventDefault()
+			event.stopPropagation()
+		}
+		form.classList.add('was-validated')
+		}, false)
+	})
+
 	new PerfectScrollbar(".header-message-list"), new PerfectScrollbar(".header-notifications-list"), $(".mobile-search-icon").on("click", function() {
 		$(".search-bar").addClass("full-search-bar")
 	}), $(".search-close").on("click", function() {

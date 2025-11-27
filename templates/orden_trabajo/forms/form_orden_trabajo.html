@@ -34,26 +34,44 @@
                     <form method="POST" class="row g-3 needs-validation" novalidate>
                         {% csrf_token %}
 
-                        <div class="col-md-6">
-                            <label class="form-label"><strong>Código</strong></label>
-                            <input type="text" class="form-control" value="OT-{{ now|date:'Y' }}-XXXX" disabled>
-                            <div class="form-text">Este número se asignará automáticamente al guardar.</div>
-                        </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Código</label>
+                                {% if accion == 'Agregar' or accion == 'Agregar desde Incidencia' %}
+                                    <input type="text" class="form-control" value="OT-{{ now|date:'Y' }}-XXXX" readonly>
+                                    <div class="form-text">Este número se asignará automáticamente al guardar.</div>
+                                {% elif accion == 'Editar' %}
+                                    <input type="text" class="form-control" value="{{codigo}}" readonly>
+                                {% endif %}
+                            </div>
 
                         {% for field in form %}
-                            <div class="col-md-6">
+                            <div class="col-md-6 
+                                {% if field.name == 'acciones' or field.name == 'recursos_usados' %} d-none {% endif %}" 
+                                id="{{ field.name }}-wrapper">
+                                
                                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label|safe }}</label>
-                                {% if field.name == 'activo' or field.name == 'plan' %}
+                                
+                                {% if field.name == 'activo' %}
                                     <div class="d-flex align-items-center">
                                         {{ field }}
-                                        <a href="#" class="btn btn-outline-info btn-sm ms-2" title="Agregar">
-                                           <i class="bx bx-plus"></i>
+                                        <a href="{% url 'agregar_activo' %}" class="btn btn-outline-info btn-sm ms-2" title="Agregar Activo">
+                                        <i class="bx bx-plus"></i>
+                                        </a>
+                                    </div>
+                                {% elif field.name == 'plan' %}
+                                    <div class="d-flex align-items-center">
+                                        {{ field }}
+                                        <a href="{% url 'plan_gestion' 'preventivo' %}" class="btn btn-outline-info btn-sm ms-2" title="Agregar Plan">
+                                        <i class="bx bx-plus"></i>
                                         </a>
                                     </div>
                                 {% else %}
                                     {{ field }}
                                 {% endif %}
-                                <div class="invalid-feedback">Por favor, ingrese {{ field.label|striptags|lower }}.</div>
+                                
+                                <div class="invalid-feedback">
+                                    Por favor, ingrese {{ field.label|striptags|lower }}.
+                                </div>
                             </div>
                         {% endfor %}
 
@@ -61,13 +79,17 @@
                             <button type="submit" class="btn btn-info px-5" name="action" value="{{ accion }}">
                                 <i class="bx bx-save"></i> Guardar
                             </button>
-                            <a href="{% url 'orden_trabajo' %}" class="btn btn-light px-5">
-                                {% if accion != 'Agregar desde Incidencia' %}
-                                    <i class="bx bx-arrow-back"></i> Volver
-                                {% else %}
-                                    <i class="bx bx-x"></i> Cancelar
-                                {% endif %}
-                            </a>
+                            
+                                    {% if accion == 'Agregar desde Incidencia' %}
+                                        <a href="{% url 'agregar_incidencia' %}" class="btn btn-light px-5">
+                                            <i class="bx bx-x"></i> Cancelar
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'orden_trabajo' %}" class="btn btn-light px-5">
+                                            <i class="bx bx-arrow-back"></i> Volver
+                                        </a>
+                                    {% endif %}
+                            
                         </div>
                     </form>
                 </div>
@@ -83,4 +105,35 @@
     <!--Start Back To Top Button--> 
     <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
     <!--End Back To Top Button--> 
+{% endblock %}
+
+{% block script %}
+	<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const estadoSelect = document.getElementById("id_OT_estado");
+            const accionesWrapper = document.getElementById("acciones-wrapper");
+            const recursosWrapper = document.getElementById("recursos_usados-wrapper");
+
+            function toggleCampos() {
+                if (estadoSelect.value === "cerrada") {
+                    accionesWrapper.classList.remove("d-none");
+                    recursosWrapper.classList.remove("d-none");
+                    // marcar como requeridos dinámicamente
+                    document.getElementById("id_acciones").setAttribute("required", "required");
+                    document.getElementById("id_recursos_usados").setAttribute("required", "required");
+                } else {
+                    accionesWrapper.classList.add("d-none");
+                    recursosWrapper.classList.add("d-none");
+                    document.getElementById("id_acciones").removeAttribute("required");
+                    document.getElementById("id_recursos_usados").removeAttribute("required");
+                }
+            }
+
+            // Ejecutar al cargar
+            toggleCampos();
+
+            // Ejecutar cada vez que cambie el estado
+            estadoSelect.addEventListener("change", toggleCampos);
+        });
+    </script>
 {% endblock %}

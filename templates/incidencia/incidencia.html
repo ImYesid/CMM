@@ -26,6 +26,15 @@
                 <a href="{% url 'agregar_incidencia' %}" class="btn btn-success">
                     <i class="bx bx-plus"></i> Agregar Incidencias
                 </a>
+                {% if filtro == 'activos' %}
+                    <a href="?filtro=all" class="btn btn-outline-secondary">
+                        Mostrar Todo
+                    </a>
+                {% else %}
+                    <a href="?filtro=activos" class="btn btn-outline-info">
+                        Ocultar Incidencias Resueltas/Canceladas
+                    </a>
+                {% endif %}
             </div>
 
             <div class="card">
@@ -51,7 +60,11 @@
                                         <td>{{ in.descripcion }}</td>
                                         <td>{{ in.fecha_reporte }}</td>
                                         <td>{{ in.nivel_prioridad }}</td>
-                                        <td>{{ in.estado }}</td>
+                                        <td>
+                                            <span class="estado {{ in.estado|lower }}">
+                                                {{ in.estado }}
+                                            </span>
+                                        </td>
                                         <td>{{ in.usuario }}</td>
                                         <td>{{ in.OT }}</td>
                                         <td class="text-center">

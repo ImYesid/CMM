@@ -7,8 +7,18 @@ from .models import *
 
 @login_required(login_url = 'login')
 def activos(request):
-    activos = Activo.objects.all()
-    return render(request, 'activos/activos.html', {'activos' : activos} )
+    filtro = request.GET.get('filtro', 'activos') 
+
+    if filtro == 'activos':
+        activos = Activo.objects.filter(estado_operativo__in=['operativo', 'mantenimiento'])
+    else:
+        activos = Activo.objects.all()
+
+    context = {
+        'activos': activos,
+        'filtro': filtro,
+    }
+    return render(request, 'activos/activos.html', context)
     
 @login_required(login_url='login')
 def agregar_activo(request):

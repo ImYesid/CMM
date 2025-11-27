@@ -7,28 +7,39 @@
     min-width: 90px;
 }
 
-.inactivo {
+.inactivo,
+.retirado,
+.reportada {
     background-color: #6c757d;
     color: #fff;
     border: 1px solid #6c757d;
 }
 
 .completo,
-.activo {
+.operativo,
+.abierta,
+.habilitado,
+.resuelta {
     background-color: #D4EDDA;
     color: #155724;
     border: 1px solid #C3E6CB;
 }
 
 .pendiente,
-.incompleto {
+.mantenimiento,
+.en_proceso,
+.en_ejecucion {
     background-color: #FFF3CD;
     color: #856404;
     border: 1px solid #FFEEBA;
 }
 
 .cancelado,
-.agotado {
+.inoperativo,
+.cerrada,
+.cancelada,
+.deshabilitado,
+.bloqueada {
     background-color: #F8D7DA;
     color: #721C24;
     border: 1px solid #F5C6CB;

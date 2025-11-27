@@ -14,15 +14,15 @@ class OrdenTrabajo(models.Model):
     codigo = models.CharField(max_length=50, unique=True)
     activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='activo_ordenes')
     plan = models.ForeignKey(PlanGestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='plan_ordenes')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes_asignadas')
+    fecha_inicio = models.DateField(default=timezone.now, blank=False)
+    fecha_fin = models.DateField(null=True, blank=True)
+    tiempo_intervencion = models.DurationField(null=True, blank=True)
+    OT_estado = models.CharField(max_length=15, choices=OT_ESTADO_CHOICES, default='abierta', db_index=True)
     descripcion_falla = models.TextField()
     acciones = models.TextField(blank=True)
-    fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField(null=True, blank=True)
-    OT_estado = models.CharField(max_length=15, choices=OT_ESTADO_CHOICES, default='abierta', db_index=True)
     recursos_usados = models.TextField(blank=True)  # materiales/herramientas/horas
-    tiempo_intervencion = models.DurationField(null=True, blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes_asignadas')
-
+    
     def save(self, *args, **kwargs):
         if not self.pk:  # Si la instancia es nueva (sin PK)
             # Generar número consecutivo
@@ -40,8 +40,23 @@ class OrdenTrabajo(models.Model):
 
                     nuevo_numero = ultimo_numero + 1
                     self.codigo = f"OT-{año}-{nuevo_numero:04d}"
+            # Activo pasa a mantenimiento
+            self.activo.estado_operativo = "mantenimiento"
+            self.activo.save()
 
-            super().save(*args, **kwargs) # Guarda la instancia por primera vez
+        else: # Edición
+            ot_original = OrdenTrabajo.objects.get(pk=self.pk)
+            if ot_original.OT_estado != "cerrada" and self.OT_estado == "cerrada":
+                # Cambiar estado del activo según resultado/incidencia
+                if self.OT_incidencia.exists():
+                    incidencia = self.OT_incidencia.first()
+                    if incidencia.estado == "resuelta":
+                        self.activo.estado_operativo = "operativo"
+                    else:
+                        self.activo.estado_operativo = "inoperativo"
+                    self.activo.save()
+
+        super().save(*args, **kwargs)
             
     class Meta:
         verbose_name = 'Orden de trabajo'

@@ -147,7 +147,7 @@ def theme_settings(request):
         configuracion.color_encabezado = request.POST.get('color_encabezado', configuracion.color_encabezado)
         configuracion.color_sidebar = request.POST.get('color_sidebar', configuracion.color_sidebar)
         configuracion.save()
-        return redirect('home')  # Cambia esto a la vista que prefieras después de actualizar
+        return redirect('home')
 
     return render(request, 'includes/switcher.html', {'configuracion': configuracion})          
 

@@ -22,10 +22,19 @@
             <hr />
 
             <!-- Botón de agregar -->
-            <!<div class="mb-3">
+            <div class="mb-3">
                 <a href="{% url 'agregar_activo' %}" class="btn btn-success">
                     <i class="bx bx-plus"></i> Agregar nuevo Activo
                 </a>
+                {% if filtro == 'activos' %}
+                    <a href="?filtro=all" class="btn btn-outline-secondary">
+                        Mostrar Todo
+                    </a>
+                {% else %}
+                    <a href="?filtro=activos" class="btn btn-outline-info">
+                        Ocultar Activos Inoperativo/Retirado
+                    </a>
+                {% endif %}
             </div> 
 
             <div class="card">
@@ -50,7 +59,11 @@
                                         <td>{{ a.nombre }}</td>
                                         <td>{{ a.tipo }}</td>
                                         <td>{{ a.ubicacion }}</td>
-                                        <td>{{ a.estado_operativo }}</td>
+                                        <td>
+                                            <span class="estado {{ a.estado_operativo|lower }}">
+                                                {{ a.estado_operativo }}
+                                            </span>
+                                        </td>
                                         <td>{{ a.fecha_registro }}</td>                        
                                         <td class="text-center">
                                             <a href="{% url 'editar_activo' a.id %}" class="btn btn-sm btn-info">

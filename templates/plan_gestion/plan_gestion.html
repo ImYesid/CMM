@@ -95,7 +95,11 @@
                                                                             <td>{{ plan.plan_nombre }}</td>
                                                                             <td>{{ plan.frecuencia }}</td>
                                                                             <td>{{ plan.descripcion }}</td>
-                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td>
+                                                                                <span class="estado {{ plan.estado|lower }}">
+                                                                                    {{ plan.estado }}
+                                                                                </span>
+                                                                            </td>
                                                                             <td class="text-center">
                                                                                 <button class="btn btn-sm btn-info editar-Preventivo" data-id="{{ plan.id }}">
                                                                                     <i class="bx bx-edit"></i>
@@ -192,7 +196,11 @@
                                                                             <td>{{ plan.plan_nombre }}</td>
                                                                             <td>{{ plan.frecuencia }}</td>
                                                                             <td>{{ plan.descripcion }}</td>
-                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td>
+                                                                                <span class="estado {{ plan.estado|lower }}">
+                                                                                    {{ plan.estado }}
+                                                                                </span>
+                                                                            </td>
                                                                             <td class="text-center">
                                                                                 <button class="btn btn-sm btn-info editar-Predictivo" data-id="{{ plan.id }}">
                                                                                     <i class="bx bx-edit"></i>
@@ -289,7 +297,11 @@
                                                                             <td>{{ plan.plan_nombre }}</td>
                                                                             <td>{{ plan.frecuencia }}</td>
                                                                             <td>{{ plan.descripcion }}</td>
-                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td>
+                                                                                <span class="estado {{ plan.estado|lower }}">
+                                                                                    {{ plan.estado }}
+                                                                                </span>
+                                                                            </td>
                                                                             <td class="text-center">
                                                                                 <button class="btn btn-sm btn-info editar-Correctivo" data-id="{{ plan.id }}">
                                                                                     <i class="bx bx-edit"></i>
@@ -386,7 +398,11 @@
                                                                             <td>{{ plan.plan_nombre }}</td>
                                                                             <td>{{ plan.frecuencia }}</td>
                                                                             <td>{{ plan.descripcion }}</td>
-                                                                            <td>{{ plan.estado }}</td>
+                                                                            <td>
+                                                                                <span class="estado {{ plan.estado|lower }}">
+                                                                                    {{ plan.estado }}
+                                                                                </span>
+                                                                            </td>
                                                                             <td class="text-center">
                                                                                 <button class="btn btn-sm btn-info editar-Inspeccion" data-id="{{ plan.id }}">
                                                                                     <i class="bx bx-edit"></i>

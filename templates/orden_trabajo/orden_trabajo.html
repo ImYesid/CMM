@@ -26,6 +26,15 @@
                 <a href="{% url 'agregar_orden_trabajo' %}" class="btn btn-success">
                     <i class="bx bx-plus"></i> Agregar OT
                 </a>
+                {% if filtro == 'activos' %}
+                    <a href="?filtro=all" class="btn btn-outline-secondary">
+                        Mostrar Todo
+                    </a>
+                {% else %}
+                    <a href="?filtro=activos" class="btn btn-outline-info">
+                        Ocultar Ordenes Cerradas/Bloqueadas
+                    </a>
+                {% endif %}
             </div>
 
             <div class="card">
@@ -49,8 +58,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% if ot %}
-                                    {% for ot in ot %}
+                                {% if ordenes  %}
+                                    {% for ot in ordenes %}
                                     <tr>
                                         <td>{{ ot.codigo }}</td>
                                         <td>{{ ot.activo }}</td>
@@ -62,7 +71,11 @@
                                         <td>{{ ot.fecha_fin }}</td>
                                         <td>{{ ot.recursos_usados }}</td>
                                         <td>{{ ot.tiempo_intervencion }}</td>
-                                        <td>{{ ot.OT_estado }}</td>
+                                        <td>
+                                            <span class="estado {{ ot.OT_estado|lower }}">
+                                                {{ ot.OT_estado }}
+                                            </span>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{% url 'editar_orden_trabajo' ot.id %}" class="btn btn-sm btn-info">
                                                 <i class="bx bx-edit"></i>

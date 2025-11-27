@@ -9,8 +9,18 @@ from .models import *
 
 @login_required(login_url = 'login')
 def orden_trabajo(request):
-    ot = OrdenTrabajo.objects.all()
-    return render(request, 'orden_trabajo/orden_trabajo.html', {'ot' : ot} )
+    filtro = request.GET.get('filtro', 'activos') 
+
+    if filtro == 'activos':
+        ordenes = OrdenTrabajo.objects.filter(OT_estado__in=['abierta', 'en_ejecucion'])
+    else:
+        ordenes = OrdenTrabajo.objects.all()
+
+    context = {
+        'ordenes': ordenes,
+        'filtro': filtro,
+    }
+    return render(request, 'orden_trabajo/orden_trabajo.html', context)
 
 @login_required(login_url='login')
 def agregar_orden_trabajo(request):
@@ -61,13 +71,18 @@ def editar_orden_trabajo(request, id_OT):
     if request.method == "POST":
         form = OrdenTrabajoForm(request.POST, instance=ot)
         if form.is_valid():
-            print(ot)
-            print("aqui que")
             form.save()
             messages.success(request, "OT actualizada correctamente.")
             return redirect('orden_trabajo')
+        else:
+            messages.error(request, "Actualizacion invalida.")
     else:
-        print(ot)
         form = OrdenTrabajoForm(instance=ot)
+
+    context = {
+        'form': form,
+        'accion': 'Editar',
+        'codigo': ot.codigo
+    }
     
-    return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', {'form': form, 'accion': 'Editar'})
+    return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', context)

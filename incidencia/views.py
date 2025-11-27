@@ -6,8 +6,18 @@ from .models import *
 
 @login_required(login_url = 'login')
 def incidencias(request):
-    incidencias = Incidencia.objects.all()
-    return render(request, 'incidencia/incidencia.html', {'incidencias' : incidencias} )
+    filtro = request.GET.get('filtro', 'activos') 
+
+    if filtro == 'activos':
+        incidencias = Incidencia.objects.filter(estado__in=['en_proceso', 'reportada'])
+    else:
+        incidencias = Incidencia.objects.all()
+
+    context = {
+        'incidencias': incidencias,
+        'filtro': filtro,
+    }
+    return render(request, 'incidencia/incidencia.html', context)
 
 
 @login_required(login_url='login')

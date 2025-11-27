@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model
+from django.contrib import messages
+from django.contrib.auth import get_user_model, logout
 from orden_trabajo.models import OrdenTrabajo
 from incidencia.models import Incidencia
 from activos.models import Activo
@@ -10,8 +11,13 @@ from usuarios.models import PerfilUsuario
 
 @login_required(login_url='login')
 def home(request):
-    perfil = request.user.perfilusuario     # <- tu perfil
-    rol = perfil.cargo.cargo 
+    try:
+        perfil = request.user.perfilusuario
+        rol = perfil.cargo.cargo
+    except PerfilUsuario.DoesNotExist:
+        messages.error(request, "Tu perfil no está configurado. Contacta al administrador.")
+        logout(request)
+        return redirect('login')
     return render(request, 'home.html', {'mensaje': 'Bienvenido a la página principal'
                                          , 'role':rol})
 
