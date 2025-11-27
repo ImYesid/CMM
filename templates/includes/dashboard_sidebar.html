@@ -19,6 +19,7 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+    {% if role != 'Tecnico' %}
         <li>
             <a href="{% url 'activos' %}">
                 <div class="parent-icon"><i class="fab fa-pushed"></i>
@@ -26,7 +27,8 @@
                 <div class="menu-title">Activos</div>
             </a>
         </li>
-
+    {% endif %}
+    {% if role == 'Administrador' %}
         <li>
             <a href="{% url 'historial' %}">
                 <div class="parent-icon"><i class="fas fa-book-medical"></i>
@@ -34,21 +36,24 @@
                 <div class="menu-title">Historial</div>
             </a>
         </li>
-        <li>
-            <a href="{% url 'incidencias' %}">
-                <div class="parent-icon"> <i class="fas fa-exclamation-circle"></i>
-                </div>
-                <div class="menu-title">Incidencia</div>
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'orden_trabajo' %}">
-                <div class="parent-icon"><i class="fas fa-briefcase"></i>
-                </div>
-                <div class="menu-title">Ordenes de trabajos</div>
-            </a>
-        </li>
-        <li>
+    {% endif %}
+    <li>
+        <a href="{% url 'incidencias' %}">
+            <div class="parent-icon"> <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="menu-title">Incidencia</div>
+        </a>
+    </li>
+    
+    <li>
+        <a href="{% url 'orden_trabajo' %}">
+            <div class="parent-icon"><i class="fas fa-briefcase"></i>
+            </div>
+            <div class="menu-title">Ordenes de trabajos</div>
+        </a>
+    </li>
+    {% if role != 'Tecnico' %}
+    <li>
             <a href="#" class="has-arrow">
                 <div class="parent-icon"><i class="fas fa-columns"></i>
                 </div>
@@ -61,7 +66,9 @@
                 <li> <a href="{% url 'plan_gestion' 'Inspeccion'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Inspección</a> </li>
             </ul>
         </li>
+    {% endif %}
     </ul>
     <!--end navigation-->
 </div>
+
 <!--end sidebar wrapper -->

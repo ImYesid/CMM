@@ -6,10 +6,14 @@ from orden_trabajo.models import OrdenTrabajo
 from incidencia.models import Incidencia
 from activos.models import Activo
 from django.db.models import Count
+from usuarios.models import PerfilUsuario
 
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'home.html', {'mensaje': 'Bienvenido a la página principal'})
+    perfil = request.user.perfilusuario     # <- tu perfil
+    rol = perfil.cargo.cargo 
+    return render(request, 'home.html', {'mensaje': 'Bienvenido a la página principal'
+                                         , 'role':rol})
 
 def dashboard_data(request):
     User = get_user_model()

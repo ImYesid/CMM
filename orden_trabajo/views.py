@@ -33,7 +33,7 @@ def agregar_orden_trabajo(request):
                 request.session['ot_creada'] = data
                 messages.success(request, "OT agregada correctamente.")
                 return redirect('agregar_incidencia')
-
+            
             HistorialGestion.objects.create(
                 activo=orden.activo,
                 mmt_tipo=orden.plan.plan_tipo if orden.plan else 'correctivo',
@@ -42,7 +42,7 @@ def agregar_orden_trabajo(request):
                 usuario=request.user
             )
 
-            return JsonResponse({"success": True, "message": "OT generada correctamente"})
+            return redirect('orden_trabajo')
     else:
         form = OrdenTrabajoForm(initial=temp) if temp else OrdenTrabajoForm()
 
@@ -61,10 +61,13 @@ def editar_orden_trabajo(request, id_OT):
     if request.method == "POST":
         form = OrdenTrabajoForm(request.POST, instance=ot)
         if form.is_valid():
+            print(ot)
+            print("aqui que")
             form.save()
             messages.success(request, "OT actualizada correctamente.")
             return redirect('orden_trabajo')
     else:
+        print(ot)
         form = OrdenTrabajoForm(instance=ot)
     
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', {'form': form, 'accion': 'Editar'})
