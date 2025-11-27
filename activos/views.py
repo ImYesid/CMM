@@ -36,7 +36,7 @@ def editar_activo(request, id_a):
         form = ActivoForm(request.POST, instance=a)
         if form.is_valid():
             form.save()
-            messages.success(request, "activo actualizada correctamente.")
+            messages.success(request, "activo actualizado correctamente.")
             return redirect('activos')
     else:
         form = ActivoForm(instance=a)
