@@ -19,7 +19,7 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
-    {% if role != 'Tecnico' %}
+        {% if role != 'Tecnico' %}
         <li>
             <a href="{% url 'activos' %}">
                 <div class="parent-icon"><i class="fab fa-pushed"></i>
@@ -27,8 +27,8 @@
                 <div class="menu-title">Activos</div>
             </a>
         </li>
-    {% endif %}
-    {% if role == 'Administrador' %}
+        {% endif %}
+        {% if role == 'Administrador' %}
         <li>
             <a href="{% url 'historial' %}">
                 <div class="parent-icon"><i class="fas fa-book-medical"></i>
@@ -36,39 +36,46 @@
                 <div class="menu-title">Historial</div>
             </a>
         </li>
-    {% endif %}
-    <li>
-        <a href="{% url 'incidencias' %}">
-            <div class="parent-icon"> <i class="fas fa-exclamation-circle"></i>
-            </div>
-            <div class="menu-title">Incidencia</div>
-        </a>
-    </li>
-    
-    <li>
-        <a href="{% url 'orden_trabajo' %}">
-            <div class="parent-icon"><i class="fas fa-briefcase"></i>
-            </div>
-            <div class="menu-title">Ordenes de trabajos</div>
-        </a>
-    </li>
-    {% if role != 'Tecnico' %}
-    <li>
+        {% endif %}
+        <li>
+            <a href="{% url 'incidencias' %}">
+                <div class="parent-icon"> <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="menu-title">Incidencia</div>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'orden_trabajo' %}">
+                <div class="parent-icon"><i class="fas fa-briefcase"></i>
+                </div>
+                <div class="menu-title">Ordenes de trabajos</div>
+            </a>
+        </li>
+        {% if role != 'Tecnico' %}
+        <li>
             <a href="#" class="has-arrow">
                 <div class="parent-icon"><i class="fas fa-columns"></i>
                 </div>
                 <div class="menu-title">Plan de trabajo</div>
             </a>
             <ul>
-                <li> <a href="{% url 'plan_gestion' 'Preventivo' %}"><i class="bx bx-right-arrow-alt"></i>Gestión Preventiva</a> </li>
-                <li> <a href="{% url 'plan_gestion' 'Predictivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Predictiva</a> </li>
-                <li> <a href="{% url 'plan_gestion' 'Correctivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Correctivo</a> </li>
-                <li> <a href="{% url 'plan_gestion' 'Inspeccion'%}"><i class="bx bx-right-arrow-alt"></i>Gestión Inspección</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Preventivo' %}"><i class="bx bx-right-arrow-alt"></i>Gestión
+                        Preventiva</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Predictivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión
+                        Predictiva</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Correctivo'%}"><i class="bx bx-right-arrow-alt"></i>Gestión
+                        Correctivo</a> </li>
+                <li> <a href="{% url 'plan_gestion' 'Inspeccion'%}"><i class="bx bx-right-arrow-alt"></i>Gestión
+                        Inspección</a> </li>
             </ul>
         </li>
-    {% endif %}
+        {% endif %}
     </ul>
     <!--end navigation-->
 </div>
-
 <!--end sidebar wrapper -->
+
+<script src="{% static 'js/index.js' %}"></script>
+	<!--app JS-->
+<script src="{% static 'js/app.js' %}"></script>

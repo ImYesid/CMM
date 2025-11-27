@@ -44,7 +44,7 @@
                 <h3 class="mb-0 mt-0" id="valor_ot">...</h3>
                 <p class="mb-1">Órdenes de Trabajo</p>
               </div>
-              <canvas id="ot_estado_proceso"></canvas>
+              <div id="ot_estado_proceso"></div>
             </div>
           </div>
         </div>
@@ -93,7 +93,6 @@
 
 {% block script %}
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- <script src="{% static 'js/dashboard-human-resources.js'%}"></script> -->
 
 		<script>
       fetch("/home/data/")
@@ -108,27 +107,58 @@
           const totalOT = data.ot_estado_proceso.reduce((acc, e) => acc + e.total, 0);
           document.querySelector("#valor_ot").textContent = totalOT;
 
-          // Gráfica de OT por estado
+          // Extraer estados y totales
           const estados = data.ot_estado_proceso.map(e => e.OT_estado);
           const totales = data.ot_estado_proceso.map(e => e.total);
 
-          new Chart(document.getElementById("ot_estado_proceso"), {
-            type: 'bar',
-            data: {
-              labels: estados,
-              datasets: [{
-                label: 'Órdenes de Trabajo',
-                data: totales,
-                backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6c757d']
-              }]
+          // Configuración ApexCharts estilo Rukada
+          var optionsOT = {
+            chart: {
+              type: 'area',   // puedes cambiar a 'bar' si prefieres
+              height: 110,
+              sparkline: { enabled: true }
             },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: { display: false }
+            dataLabels: { enabled: false },
+            fill: {
+              type: 'gradient',
+              gradient: {
+                shade: 'light',
+                shadeIntensity: 1,
+                type: 'vertical',
+                opacityFrom: 0.7,
+                opacityTo: 0.2,
+                stops: [0, 100, 100, 100]
               }
+            },
+            colors: ["#28a745"], // color principal (puedes usar paleta)
+            series: [{
+              name: 'Órdenes de Trabajo',
+              data: totales
+            }],
+            stroke: {
+              width: 2.5,
+              curve: 'smooth',
+              dashArray: [0]
+            },
+            tooltip: {
+              theme: 'dark',
+              fixed: { enabled: false },
+              x: { show: false },
+              y: {
+                title: {
+                  formatter: function () { return '' }
+                }
+              },
+              marker: { show: false }
+            },
+            // Mostrar etiquetas de estados en el eje X
+            xaxis: {
+              categories: estados
             }
-          });
+          };
+
+          // Renderizar en el div
+          new ApexCharts(document.querySelector("#ot_estado_proceso"), optionsOT).render();
         });
     </script>
 {% endblock %}
