@@ -5,80 +5,159 @@
 <div class="page-wrapper">
   <div class="page-content">
 
-    <div class="row">
-      <div class="col-12 col-lg-12 col-xl-6">
-        <div class="row row-cols-1 row-cols-lg-2">
-          <div class="col">
-            <div class="card radius-10 overflow-hidden">
-              <div class="card-body">
-                <div class="font-35 text-warning"><i class='bx bx-group'></i></div>
-                <h3 class="mb-0 mt-0" id="valor_operarios">...</h3>
-                <p class="mb-0">Operarios Activos</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-10 overflow-hidden">
-              <div class="card-body">
-                <div class="font-35 text-primary"><i class='fab fa-pushed'></i></div>
-                <h3 class="mb-0 mt-0" id="valor_activos">...</h3>
-                <p class="mb-0 mt-1">Activos Operativos</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row row-cols-1 row-cols-lg-2">
-          <div class="col">
-            <div class="card radius-10 overflow-hidden">
-              <div class="card-body">
-                <div class="font-35 text-danger"><i class='fas fa-exclamation-circle'></i></div>
-                <h3 class="mb-0 mt-0" id="valor_incidencias">...</h3>
-                <p class="mb-0 mt-1">Índice Incidencias</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card radius-10 overflow-hidden">
-              <div class="card-body">
-                <div class="font-35 text-success"><i class='fas fa-briefcase'></i></div>
-                <h3 class="mb-0 mt-0" id="valor_ot">...</h3>
-                <p class="mb-1">Órdenes de Trabajo</p>
-              </div>
-              <div id="ot_estado_proceso"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card radius-10 overflow-hidden">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+      <div class="col">
+        <div class="card radius-10 bg-gradient-deepblue">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <div class="">
-                <h3 class="mb-0">78.49%</h3>
-                <p class="mb-0">Bounce Rate</p>
-              </div>
+              <h5 class="mb-0 text-white" id="valor_operarios">...</h5>
               <div class="ms-auto">
-                <div id="bounce-rate"></div>
+                <i class='fas fa-chalkboard-teacher fs-3 text-white'></i>
               </div>
+            </div>
+            <!-- <div class="progress my-2 bg-white-transparent" style="height:4px;">
+              <div class="progress-bar bg-white" role="progressbar" style="width: 55%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+            <div class="d-flex align-items-center text-white">
+              <p class="mb-0">Operarios Activos</p>
             </div>
           </div>
         </div>
-
       </div>
-
-      <div class="col-12 col-lg-12 col-xl-6">
-        <div class="card radius-10">
+      <div class="col">
+        <div class="card radius-10 bg-gradient-ohhappiness">
           <div class="card-body">
-            <div id="submitted-application"></div>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 text-white" id="valor_activos">...</h5>
+              <div class="ms-auto">
+                <i class='fab fa-pushed fs-3 text-white'></i>
+              </div>
+            </div>
+            <!-- <div class="progress my-2 bg-white-transparent" style="height:4px;">
+              <div class="progress-bar bg-white" role="progressbar" style="width: 55%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+            <div class="d-flex align-items-center text-white">
+              <p class="mb-0">Activos Operativos</p>
+            </div>
           </div>
         </div>
-        <div class="card radius-10">
+      </div>
+      <div class="col">
+        <div class="card radius-10 bg-gradient-ibiza">
           <div class="card-body">
-            <div id="users-status"></div>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 text-white" id="valor_incidencias">...</h5>
+              <div class="ms-auto">
+                <i class='fas fa-exclamation-circle fs-3 text-white'></i>
+              </div>
+            </div>
+            <!-- <div class="progress my-2 bg-white-transparent" style="height:4px;">
+              <div class="progress-bar bg-white" role="progressbar" style="width: 55%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+            <div class="d-flex align-items-center text-white">
+              <p class="mb-0">Índice Incidencias</p>
+            </div>
           </div>
         </div>
       </div>
+      <div class="col">
+        <div class="card radius-10 bg-gradient-moonlit">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 text-white" id="valor_ot">...</h5>
+              <div class="ms-auto">
+                <i class='fas fa-briefcase fs-3 text-white'></i>
+              </div>
+            </div>
+            <!-- <div class="progress my-2 bg-white-transparent" style="height:4px;">
+              <div class="progress-bar bg-white" role="progressbar" style="width: 55%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+            <div class="d-flex align-items-center text-white">
+              <p class="mb-0">Órdenes de Trabajo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
 
-    </div><!--end row-->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-2">
+      <!--OT por Tecnico-->
+      <div class="col d-flex">
+        <div class="card radius-10 w-100">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <div>
+                <h5 class="mb-0">OT por Técnicos</h5>
+              </div>
+              <div class="dropdown options ms-auto">
+                <div class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                  <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'orden_trabajo' %}">Ordenes Trabajo</a></li>
+                  <li><a class="dropdown-item" href="{% url 'historial' %}">Historial</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-js-container3">
+              <canvas id="chart7"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Planes de Gestión-->
+      <div class="col d-flex">
+        <div class="card radius-10 w-100 overflow-hidden">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <div>
+                <h5 class="mb-0">Planes de Gestión</h5>
+              </div>
+              <div class="dropdown options ms-auto">
+                <div class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                  <i class='bx bx-dots-horizontal-rounded'></i>
+                </div>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'plan_gestion' 'Preventivo' %}">Planes</a></li>
+                  <li><a class="dropdown-item" href="{% url 'historial' %}">Historial</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-js-container2">
+              <canvas id="chart8"></canvas>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center border-top">
+              Gestión Preventiva
+              <span class="badge bg-primary rounded-pill" id="preventivo">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Gestión Predictiva
+              <span class="badge bg-success rounded-pill" id="predictivo">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Gestión Correctiva
+              <span class="badge bg-danger rounded-pill" id="correctivo">0</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Gestión Inspección
+              <span class="badge bg-danger rounded-pill" id="inspeccion">0</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--end row-->
 
   </div>
 </div>
@@ -92,73 +171,5 @@
 {% endblock %}
 
 {% block script %}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-		<script>
-      fetch("/home/data/")
-        .then(response => response.json())
-        .then(data => {
-          // Reemplazar valores estáticos
-          document.querySelector("#valor_operarios").textContent = data.operarios_activos;
-          document.querySelector("#valor_activos").textContent = data.activos_operativos;
-          document.querySelector("#valor_incidencias").textContent = `${data.indice_incidencias}%`;
-
-          // Total OT (sumando todos los estados)
-          const totalOT = data.ot_estado_proceso.reduce((acc, e) => acc + e.total, 0);
-          document.querySelector("#valor_ot").textContent = totalOT;
-
-          // Extraer estados y totales
-          const estados = data.ot_estado_proceso.map(e => e.OT_estado);
-          const totales = data.ot_estado_proceso.map(e => e.total);
-
-          // Configuración ApexCharts estilo Rukada
-          var optionsOT = {
-            chart: {
-              type: 'area',   // puedes cambiar a 'bar' si prefieres
-              height: 110,
-              sparkline: { enabled: true }
-            },
-            dataLabels: { enabled: false },
-            fill: {
-              type: 'gradient',
-              gradient: {
-                shade: 'light',
-                shadeIntensity: 1,
-                type: 'vertical',
-                opacityFrom: 0.7,
-                opacityTo: 0.2,
-                stops: [0, 100, 100, 100]
-              }
-            },
-            colors: ["#28a745"], // color principal (puedes usar paleta)
-            series: [{
-              name: 'Órdenes de Trabajo',
-              data: totales
-            }],
-            stroke: {
-              width: 2.5,
-              curve: 'smooth',
-              dashArray: [0]
-            },
-            tooltip: {
-              theme: 'dark',
-              fixed: { enabled: false },
-              x: { show: false },
-              y: {
-                title: {
-                  formatter: function () { return '' }
-                }
-              },
-              marker: { show: false }
-            },
-            // Mostrar etiquetas de estados en el eje X
-            xaxis: {
-              categories: estados
-            }
-          };
-
-          // Renderizar en el div
-          new ApexCharts(document.querySelector("#ot_estado_proceso"), optionsOT).render();
-        });
-    </script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
