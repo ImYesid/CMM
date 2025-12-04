@@ -14,13 +14,11 @@ from usuarios.models import PerfilUsuario
 def home(request):
     try:
         perfil = request.user.perfilusuario
-        rol = perfil.cargo.cargo
     except PerfilUsuario.DoesNotExist:
         messages.error(request, "Tu perfil no está configurado. Contacta al administrador.")
         logout(request)
         return redirect('login')
-    return render(request, 'home.html', {'mensaje': 'Bienvenido a la página principal'
-                                         , 'role':rol})
+    return render(request, 'home.html', {'mensaje': 'Bienvenido a la página principal'})
 
 def dashboard_data(request):
     User = get_user_model()

@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from orden_trabajo.models import OrdenTrabajo
 
 # Create your models here.
 class MyAccountManager(BaseUserManager):
@@ -56,8 +58,9 @@ class Cargo(models.Model):
         ('Administrador', 'Administrador'),
         ('Supervisor', 'Supervisor'),
         ('Tecnico', 'Tecnico'),
+        ('Operario', 'Operario'),
     ]
-    cargo  = models.CharField(max_length=50, choices=CARGO_CHOICES, default='Tecnico')
+    cargo  = models.CharField(max_length=50, choices=CARGO_CHOICES, default='Operario')
 
     def __str__(self):
         return self.cargo
@@ -94,3 +97,20 @@ class ConfiguracionUsuario(models.Model):
 
     def __str__(self):
         return f"Configuración de {self.usuario.username}"
+    
+class User_feedback(models.Model): #CSAT (Customer Satisfaction Score)
+    SCORE_CHOICES = [
+        ('1', 'Muy insatisfecho'),
+        ('2', 'Insatisfecho'),
+        ('3', 'Indiferente'),
+        ('4', 'Satisfecho'),
+        ('5', 'Muy satisfecho'),
+    ]
+    usuario     = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    OT      = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='Orden_trabajo')
+    calificacion      = models.CharField(max_length=15, choices=SCORE_CHOICES, default='5', db_index=True)
+    comentario    = models.CharField(max_length=50)
+    fecha_registro   = models.DateField(default=timezone.now, blank=False)
+    
+    def __str__(self):
+        return f"{self.usuario}"

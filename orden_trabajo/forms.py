@@ -7,7 +7,7 @@ class OrdenTrabajoForm(forms.ModelForm):
     class Meta:
         model = OrdenTrabajo
         fields = [
-            'activo', 'usuario', 'plan', 'fecha_inicio',
+            'activo', 'tecnico_asignado', 'plan', 'fecha_inicio',
             'fecha_fin', 'tiempo_intervencion', 'OT_estado', 'descripcion_falla',
             'acciones', 'recursos_usados'
         ]

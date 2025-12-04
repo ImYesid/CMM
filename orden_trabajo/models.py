@@ -11,10 +11,13 @@ class OrdenTrabajo(models.Model):
         ('cerrada', 'Cerrada'),
         ('bloqueada', 'Bloqueada'),
     ]
+    ENCUESTA_CHOICES = [
+        ('0', 'Incompleta'),
+        ('1', 'Completa'),
+    ]
     codigo = models.CharField(max_length=50, unique=True)
     activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='activo_ordenes')
     plan = models.ForeignKey(PlanGestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='plan_ordenes')
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='ordenes_asignadas')
     fecha_inicio = models.DateField(default=timezone.now, blank=False)
     fecha_fin = models.DateField(null=True, blank=True)
     tiempo_intervencion = models.DurationField(null=True, blank=True)
@@ -22,6 +25,21 @@ class OrdenTrabajo(models.Model):
     descripcion_falla = models.TextField()
     acciones = models.TextField(blank=True)
     recursos_usados = models.TextField(blank=True)  # materiales/herramientas/horas
+    usuario = models.ForeignKey( # Usuario que crea la OT
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name='ordenes_creadas'
+    )
+    tecnico_asignado = models.ForeignKey(# Técnico asignado para ejecutar la reparación
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='ordenes_asignadas'
+    )
+    encuesta = models.CharField(max_length=15, choices=ENCUESTA_CHOICES, default='0')
     
     def save(self, *args, **kwargs):
         if not self.pk:  # Si la instancia es nueva (sin PK)

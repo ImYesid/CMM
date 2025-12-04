@@ -30,7 +30,9 @@ def agregar_orden_trabajo(request):
     if request.method == 'POST':
         form = OrdenTrabajoForm(request.POST)
         if form.is_valid():
-            orden = form.save() 
+            orden = form.save(commit=False)
+            orden.usuario = request.user  #asigna automáticamente el usuario autenticado
+            orden.save()
             #si veniamos desde incidencia
             if request.POST.get('action') == 'Agregar desde Incidencia':
                 #se lleva todos los campos llave de la ot
