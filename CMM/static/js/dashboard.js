@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
               scales: {
                 x: { beginAtZero: true, title: { display: true, text: 'Cantidad de OT' } },
-                y: { beginAtZero: true, title: { display: true, text: 'Técnicos' } }
+                y: { beginAtZero: true, title: { display: true, text: 'Técnico Asignado' } }
               }
             }
           });

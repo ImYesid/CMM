@@ -3,7 +3,7 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div>
-            <img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon">
+            <a href="{% url 'home' %}"><img src="{% static 'images/logo-icon.png' %}" class="logo-icon" alt="logo icon"></a>
         </div>
         <div>
             <h4 class="logo-text">CMM</h4>
@@ -20,7 +20,7 @@
                     <div class="menu-title">Dashboard</div>
                 </a>
             </li>
-            {% if perfil.cargo != 'Tecnico' %}
+            {% if perfil.cargo.cargo != 'Operario' %}
             <li>
                 <a href="{% url 'activos' %}">
                     <div class="parent-icon"><i class="fab fa-pushed"></i>
@@ -29,7 +29,7 @@
                 </a>
             </li>
             {% endif %}
-            {% if perfil.cargo == 'Administrador' %}
+            {% if perfil.cargo.cargo == "Administrador" %}
             <li>
                 <a href="{% url 'historial' %}">
                     <div class="parent-icon"><i class="fas fa-book-medical"></i>
@@ -53,7 +53,7 @@
                     <div class="menu-title">Ordenes de trabajos</div>
                 </a>
             </li>
-            {% if perfil.cargo != 'Tecnico' %}
+            {% if perfil.cargo.cargo != 'Tecnico' %}
             <li>
                 <a href="#" class="has-arrow">
                     <div class="parent-icon"><i class="fas fa-columns"></i>

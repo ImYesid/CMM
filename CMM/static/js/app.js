@@ -1,17 +1,40 @@
+
 $(function() {
 	"use strict";
+	// Inicializar metisMenu en el sidebar
+    $("#menu").metisMenu();
 
-	const forms = document.querySelectorAll('.needs-validation')
-	Array.from(forms).forEach(function (form) {
-		form.addEventListener('submit', function (event) {
-		if (!form.checkValidity()) {
-			event.preventDefault()
-			event.stopPropagation()
-		}
-		form.classList.add('was-validated')
-		}, false)
-	})
+	
 
+    // Toggle sidebar (expandir/contraer)
+    $(".toggle-icon").on("click", function () {
+        $(".wrapper").toggleClass("toggled");
+    });
+
+    // Hover para expandir temporalmente el sidebar contraído
+    $(".sidebar-wrapper").hover(
+        function () {
+            if ($(".wrapper").hasClass("toggled")) {
+                $(".wrapper").addClass("sidebar-hovered");
+            }
+        },
+        function () {
+            $(".wrapper").removeClass("sidebar-hovered");
+        }
+    );
+
+    // Back to top
+    $(window).on("scroll", function () {
+        if ($(this).scrollTop() > 300) {
+            $(".back-to-top").fadeIn();
+        } else {
+            $(".back-to-top").fadeOut();
+        }
+    });
+    $(".back-to-top").on("click", function () {
+        $("html, body").animate({ scrollTop: 0 }, 600);
+        return false;
+    });
 	new PerfectScrollbar(".header-message-list"), new PerfectScrollbar(".header-notifications-list"), $(".mobile-search-icon").on("click", function() {
 		$(".search-bar").addClass("full-search-bar")
 	}), $(".search-close").on("click", function() {

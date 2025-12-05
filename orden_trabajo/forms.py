@@ -43,7 +43,7 @@ class OrdenTrabajoForm(forms.ModelForm):
                 'placeholder': f"Ingrese {field.label if field.label else field_name.lower()}"
                 })
         
-            # Etiqueta en negrita con asterisco si es requerido
+            # Etiqueta asterisco si es requerido
             if field.required:
                 field.label = mark_safe(f"{field.label} <span style='color:red;'>*</span>")
 

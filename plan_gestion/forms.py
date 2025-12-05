@@ -18,7 +18,7 @@ class PlanGestionForm(forms.ModelForm):
 
         # Etiqueta en negrita con asterisco si es requerido
             if field.required:
-                field.label = mark_safe(f"<strong>{field.label} <span style='color:red;'>*</span></strong>")
+                field.label = mark_safe(f"{field.label} <span style='color:red;'>*</span>")
 
         self.fields['estado'].widget.attrs.update({'class': 'form-select'})
         self.fields['estado'].initial = 'habilitado'
@@ -26,6 +26,8 @@ class PlanGestionForm(forms.ModelForm):
         # Preseleccionar valor fijo
         if plan_tipo_fijo:
             self.initial['plan_tipo'] = plan_tipo_fijo
+            self.fields['plan_tipo'].disabled = True
+            
             
         
 
