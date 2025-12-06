@@ -96,6 +96,82 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       }
+
+      // GRAFICA INDICADORES DE DESEMPEÑO
+      if (data.indicadores) {
+        const labels = data.indicadores.map(e => e.mes);
+        const mtbf = data.indicadores.map(e => e.mtbf);
+        const mttr = data.indicadores.map(e => e.mttr);
+        const disponibilidad = data.indicadores.map(e => e.disponibilidad * 100); // porcentaje
+
+        const ctx5 = document.getElementById('chart5');
+        if (ctx5) {
+          new Chart(ctx5.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: 'MTBF (Horas)',
+                  data: mtbf,
+                  borderColor: '#5e72e4',
+                  backgroundColor: 'rgba(94,114,228,0.2)',
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                  pointRadius: 3
+                },
+                {
+                  label: 'MTTR (Horas)',
+                  data: mttr,
+                  borderColor: '#ffc107',
+                  backgroundColor: 'rgba(255,193,7,0.2)',
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                  pointRadius: 3
+                },
+                {
+                  label: 'Disponibilidad (%)',
+                  data: disponibilidad,
+                  borderColor: '#2dce89',
+                  backgroundColor: 'rgba(45,206,137,0.2)',
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                  pointRadius: 3,
+                  yAxisID: 'y2'
+                }
+              ]
+            },
+            options: {
+              maintainAspectRatio: false,
+              plugins: { legend: { display: true } },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: { display: true, text: 'Horas promedio' }
+                },
+                y2: {
+                  position: 'right',
+                  beginAtZero: true,
+                  title: { display: true, text: 'Disponibilidad (%)' },
+                  grid: { drawOnChartArea: false }
+                },
+                x: {
+                  title: { display: true, text: 'Mes-Año' }
+                }
+              }
+            }
+          });
+        }
+      }
+      // Actualizar los valores del último mes en los <h5>
+      if (data.ultimo_mes) {
+        document.getElementById("MTBF").textContent = data.ultimo_mes.mtbf ?? 0;
+        document.getElementById("MTTR").textContent = data.ultimo_mes.mttr ?? 0;
+        document.getElementById("Disponibilidad").textContent = `${(data.ultimo_mes.disponibilidad * 100).toFixed(2)}%`;
+      }
     })
     .catch(err => console.error("Error cargando datos del dashboard:", err));
 });
