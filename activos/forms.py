@@ -5,7 +5,7 @@ from .models import Activo
 class ActivoForm(forms.ModelForm):
     class Meta:
         model = Activo
-        fields = ['codigo','nombre','tipo','estado_operativo','ubicacion']
+        fields = ['nombre','tipo','estado_operativo','ubicacion']
         widgets = {}
 
     def __init__(self, *args, **kwargs):

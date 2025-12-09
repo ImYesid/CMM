@@ -11,10 +11,6 @@ class OrdenTrabajo(models.Model):
         ('cerrada', 'Cerrada'),
         ('bloqueada', 'Bloqueada'),
     ]
-    ENCUESTA_CHOICES = [
-        ('0', 'Incompleta'),
-        ('1', 'Completa'),
-    ]
     codigo = models.CharField(max_length=50, unique=True)
     activo = models.ForeignKey(Activo, on_delete=models.PROTECT, related_name='activo_ordenes')
     plan = models.ForeignKey(PlanGestion, on_delete=models.SET_NULL, null=True, blank=True, related_name='plan_ordenes')
@@ -39,7 +35,7 @@ class OrdenTrabajo(models.Model):
         blank=True,
         related_name='ordenes_asignadas'
     )
-    encuesta = models.CharField(max_length=15, choices=ENCUESTA_CHOICES, default='0')
+    encuesta = models.BooleanField(default=False)
     
     def save(self, *args, **kwargs):
         if not self.pk:  # Si la instancia es nueva (sin PK)
@@ -73,6 +69,13 @@ class OrdenTrabajo(models.Model):
                     else:
                         self.activo.estado_operativo = "inoperativo"
                     self.activo.save()
+                if self.encuesta == False:
+                     # Crear notificación para el usuario creador
+                    NotificacionOT.objects.create(
+                        usuario=self.usuario,
+                        orden_trabajo=self,
+                        mensaje=f"La Orden de trabajo {self.codigo} ha finalizado. Pendiente encuesta."
+                    )
 
         super().save(*args, **kwargs)
             
@@ -92,4 +95,14 @@ class OrdenTrabajo(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.codigo}/({self.activo.codigo})'
+        return f'{self.codigo}'
+    
+class NotificacionOT(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    orden_trabajo = models.ForeignKey(OrdenTrabajo, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=255)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    leida = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.usuario} - {self.mensaje}"

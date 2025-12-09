@@ -18,19 +18,44 @@
                         </a>
                     </li>                  
                     <li class="nav-item dropdown dropdown-large">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count">0</span>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span id="notificaciones-count" class="alert-count notificacion"
+                                style="display:
+                                {% if notificaciones|length > 0 %}
+                                    inline-block
+                                {% else %}
+                                    none
+                                {% endif %};">
+                                {{ notificaciones|length }}
+                            </span>
                             <i class='bx bx-comment'></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a href="javascript:;">
-                                <div class="msg-header">
-                                    <p class="msg-header-title">Messages</p>
-                                    <p class="msg-header-clear ms-auto">Marks all as read</p>
-                                </div>
-                            </a>
-                            
+                            <div class="msg-header">
+                                <p class="msg-header-title">Notificaciones Encuestas</p>
+                            </div>
+
+                            <div class="header-notifications-list">
+                                {% for notificacion in notificaciones %}
+                                    <a class="dropdown-item d-flex align-items-center py-2" href="#" data-bs-toggle ="modal" data-bs-target="#modalFacturaCompra" 
+                                        data-url="{% url 'agregar_encuesta' notificacion.orden_trabajo %}">
+                                        <div class="notify d-flex align-items-center justify-content-center notify bg-light-warning text-warning">
+                                            <i class="bx bx-bell"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="msg-title mb-0 fw-semibold text-dark" >
+                                                {{ notificacion.mensaje }}
+                                            </h6>
+                                            <small class="text-muted">{{ notificacion.fecha_creacion|timesince }}</small>
+                                        </div>
+                                    </a>
+                                {% empty %}
+                                    <p class="text-center text-muted">No hay nuevas notificaciones</p>
+                                {% endfor %}
+                            </div>              
+            
                             <a href="#">
-                                <div class="text-center msg-footer">Todas las Notificaciones</div>
+                                <div class="text-center msg-footer">Todas las Encuestas</div>
                             </a>
                         </div>
                     </li>
@@ -60,3 +85,23 @@
     </div>
 </header>
 <!--end header -->
+
+{% block content %}
+	<div class="modal fade" id="modalEncuesta" tabindex="-1" aria-labelledby="modalEncuestaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-top border-0 border-4 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info">Registrar Encuesta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalEncuestaBody">
+                    <!-- formulario vía AJAX -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Volver</button>
+                    <button type="submit" id="submitAdd" class="btn btn-info">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

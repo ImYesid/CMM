@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario, PerfilUsuario, Cargo
+from .models import Usuario, PerfilUsuario, Cargo, User_feedback
 
 class UsuarioAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_staff', 'is_active', 'last_login',)
@@ -29,6 +29,11 @@ class CargoAdmin(admin.ModelAdmin):
     list_display = ('cargo',)
     search_fields = ('cargo',)
 
+class User_feedbackAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'orden_trabajo', 'calificacion', 'comentario', 'fecha_registro',)
+    search_fields = ('usuario', 'calificacion',)
+
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(PerfilUsuario, PerfilUsuarioAdmin)
 admin.site.register(Cargo, CargoAdmin)
+admin.site.register(User_feedback, User_feedbackAdmin)

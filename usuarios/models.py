@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from orden_trabajo.models import OrdenTrabajo
@@ -107,9 +108,9 @@ class User_feedback(models.Model): #CSAT (Customer Satisfaction Score)
         ('5', 'Muy satisfecho'),
     ]
     usuario     = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    OT      = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='Orden_trabajo')
-    calificacion      = models.CharField(max_length=15, choices=SCORE_CHOICES, default='5', db_index=True)
-    comentario    = models.CharField(max_length=50)
+    orden_trabajo      = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='Orden_trabajo')
+    calificacion      = models.CharField(max_length=15, choices=SCORE_CHOICES, default='5', db_index=True, null=False)
+    comentario    = models.CharField(max_length=50, blank=True)
     fecha_registro   = models.DateField(default=timezone.now, blank=False)
     
     def __str__(self):

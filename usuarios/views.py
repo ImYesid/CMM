@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from .models import Usuario, ConfiguracionUsuario
-from .forms import LoginForm
+from .forms import LoginForm, User_feedbackForm
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -14,7 +14,7 @@ from django.core.mail import EmailMessage
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from usuarios.models import PerfilUsuario
+from usuarios.models import PerfilUsuario, User_feedback
 
 # Create your views here.
 def login(request):
@@ -172,3 +172,19 @@ def update_profile(request):
     
     messages.error(request, "Hubo un error al actualizar el perfil.")
     return render(request, 'profile.html')
+
+@login_required(login_url='login')
+def agregar_encuesta(request, OT):
+    if request.method == 'POST':
+        form = User_feedbackForm(request.POST)
+        if form.is_valid():
+            encuesta = form.save(commit=False)
+            encuesta.usuario = request.user  #asigna automáticamente el usuario autenticado
+            encuesta.ot = OT
+            encuesta.save()
+            messages.success(request, "Encuesta agregada correctamente.")
+            return redirect('home')
+    else:
+        form = User_feedbackForm()
+        
+    return render(request, 'home.html', {'form': form})

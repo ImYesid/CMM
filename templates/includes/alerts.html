@@ -11,25 +11,24 @@
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script>
             alertify.set('notifier','position', 'top-right');
-        </script> 
+        </script>
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags %}
-                    <script>
                         {% if message.tags == "success" %}
-                            alertify.success("{{ message }}");
+                            <script>alertify.success("{{ message }}");</script>
                         {% elif message.tags == "error" %}
-                            alertify.error("{{ message }}");
+                            <script>alertify.error("{{ message }}");</script>
                         {% elif message.tags == "warning" %}
-                            alertify.warning("{{ message }}");
+                            <script>alertify.warning("{{ message }}");</script>
                         {% elif message.tags == "info" %}
-                            alertify.message("{{ message }}");
+                            <script>alertify.message("{{ message }}");</script>
                         {% else %}
-                            alertify.message("{{ message }}"); // Default si no hay etiqueta
+                            <script>alertify.message("{{ message }}");</script> 
+                            <!-- Default si no hay etiqueta -->
                         {% endif %}
-                    </script>                
-                {% endif %}    
+                {% endif %}
             {% endfor %}
-        {% endif %} 
+        {% endif %}
     </body>
 </html>

@@ -11,4 +11,5 @@ urlpatterns = [
     path('reset_password/', views.reset_password, name='reset_password'),
     path('theme_settings/', views.theme_settings, name='theme_settings'),
     path('profile/', views.update_profile, name='update_profile'),
+    path('encuesta/', views.agregar_encuesta, name='agregar_encuesta'),
 ]    

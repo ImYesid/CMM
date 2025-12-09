@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 from .forms import *
 from .models import *
 
@@ -33,7 +34,8 @@ def agregar_activo(request):
 
     context = {
         'form': form, 
-        'accion': 'Agregar'
+        'accion': 'Agregar',
+        'now': timezone.now()
     }
         
     return render(request, 'activos/forms/form_activo.html', context)
@@ -50,6 +52,12 @@ def editar_activo(request, id_a):
             return redirect('activos')
     else:
         form = ActivoForm(instance=a)
+
+    context = {
+        'form': form,
+        'accion': 'Editar',
+        'codigo': a.codigo
+    }
     
-    return render(request, 'activos/forms/form_activo.html', {'form': form, 'accion': 'Editar'})
+    return render(request, 'activos/forms/form_activo.html', context)
 

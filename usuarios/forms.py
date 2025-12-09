@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.safestring import mark_safe
-from .models import Usuario
+from .models import Usuario, User_feedback
 
 class CustomPasswordInput(forms.PasswordInput):
     def render(self, name, value, attrs=None, renderer=None):
@@ -45,3 +45,24 @@ class LoginForm(forms.ModelForm):
 
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+class User_feedbackForm(forms.ModelForm):
+    class Meta:
+        model = User_feedback
+        fields = ['calificacion','comentario']
+        widgets = {}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': f"Ingrese {field.label if field.label else field_name.lower()}"
+                })
+        
+            # Etiqueta en negrita con asterisco si es requerido
+            if field.required:
+                field.label = mark_safe(f"{field.label} <span style='color:red;'>*</span>")
+
+        self.fields['calificacion'].empty_label = "Seleccione una Calificación 1-5"
+        self.fields['calificacion'].widget.attrs.update({'class': 'form-select'})   
