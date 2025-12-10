@@ -18,7 +18,7 @@ class OrdenTrabajo(models.Model):
     fecha_fin = models.DateField(null=True, blank=True)
     tiempo_intervencion = models.DurationField(null=True, blank=True)
     OT_estado = models.CharField(max_length=15, choices=OT_ESTADO_CHOICES, default='abierta', db_index=True)
-    descripcion_falla = models.TextField()
+    descripcion_falla = models.TextField(max_length=200, blank=False, null=False)
     acciones = models.TextField(blank=True)
     recursos_usados = models.TextField(blank=True)  # materiales/herramientas/horas
     usuario = models.ForeignKey( # Usuario que crea la OT

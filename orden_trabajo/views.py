@@ -88,3 +88,16 @@ def editar_orden_trabajo(request, id_OT):
     }
     
     return render(request, 'orden_trabajo/forms/form_orden_trabajo.html', context)
+
+#NOTIFICACIONES
+@login_required
+def marcar_notificacion_leida(request, notificacion_id):
+    notificacion = get_object_or_404(NotificacionOT, id=notificacion_id, usuario=request.user)
+    notificacion.leida = True
+    notificacion.save(update_fields=['leida'])
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+
+@login_required
+def marcar_todas_leidas(request):
+    NotificacionOT.objects.filter(usuario=request.user, leida=False).update(leida=True)
+    return redirect(request.META.get("HTTP_REFERER", "/"))

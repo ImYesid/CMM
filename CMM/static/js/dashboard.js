@@ -168,8 +168,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       // Actualizar los valores del último mes en los <h5>
       if (data.ultimo_mes) {
-        document.getElementById("MTBF").textContent = data.ultimo_mes.mtbf ?? 0;
-        document.getElementById("MTTR").textContent = data.ultimo_mes.mttr ?? 0;
+        document.getElementById("MTBF").textContent = data.ultimo_mes.mtbf + "/h" ?? 0 + "/h";
+        document.getElementById("MTTR").textContent = data.ultimo_mes.mttr + "/h" ?? 0 + "/h";
         document.getElementById("Disponibilidad").textContent = `${(data.ultimo_mes.disponibilidad * 100).toFixed(2)}%`;
       }
     })

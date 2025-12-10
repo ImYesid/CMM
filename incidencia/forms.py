@@ -8,9 +8,8 @@ class IncidenciaForm(forms.ModelForm):
         fields = [
             'activo',
             'nivel_prioridad',
-            'estado',
-            'usuario',
             'OT',
+            'estado',
             'descripcion'
         ]
         widgets = {}

@@ -64,5 +64,5 @@ class User_feedbackForm(forms.ModelForm):
             if field.required:
                 field.label = mark_safe(f"{field.label} <span style='color:red;'>*</span>")
 
-        self.fields['calificacion'].empty_label = "Seleccione una Calificación 1-5"
+        self.fields['calificacion'].empty_label = "Seleccione una Calificación"
         self.fields['calificacion'].widget.attrs.update({'class': 'form-select'})   

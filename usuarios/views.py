@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from .models import Usuario, ConfiguracionUsuario
@@ -15,6 +15,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from usuarios.models import PerfilUsuario, User_feedback
+from orden_trabajo.models import OrdenTrabajo
+from django.http import JsonResponse
 
 # Create your views here.
 def login(request):
@@ -174,17 +176,27 @@ def update_profile(request):
     return render(request, 'profile.html')
 
 @login_required(login_url='login')
-def agregar_encuesta(request, OT):
+def agregar_encuesta(request, ot_id):
+    orden = get_object_or_404(OrdenTrabajo, id=ot_id)
+
     if request.method == 'POST':
         form = User_feedbackForm(request.POST)
         if form.is_valid():
             encuesta = form.save(commit=False)
-            encuesta.usuario = request.user  #asigna automáticamente el usuario autenticado
-            encuesta.ot = OT
+            encuesta.usuario = request.user
+            encuesta.orden_trabajo = orden
             encuesta.save()
-            messages.success(request, "Encuesta agregada correctamente.")
-            return redirect('home')
+
+            messages.success(request, "Encuesta registrada correctamente.")
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False, "form_html": render_to_string("usuarios/form_modal.html", {"form": form}, request=request)})
     else:
         form = User_feedbackForm()
         
-    return render(request, 'home.html', {'form': form})
+    context = {
+        'form': form,
+        'orden': orden,
+        'accion': 'encuesta',
+    }
+    return render(request, 'usuarios/form_modal.html', context)

@@ -33,7 +33,9 @@ def agregar_incidencia(request):
             return redirect('agregar_orden_trabajo')
         
         if form.is_valid():
-            form.save()
+            incidencia = form.save(commit=False)
+            incidencia.usuario = request.user  #asigna automáticamente el usuario autenticado
+            incidencia.save()
             messages.success(request, "Incidencia agregada correctamente.")
             return redirect('incidencias')
     else:

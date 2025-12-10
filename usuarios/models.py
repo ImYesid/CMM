@@ -109,9 +109,16 @@ class User_feedback(models.Model): #CSAT (Customer Satisfaction Score)
     ]
     usuario     = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     orden_trabajo      = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='Orden_trabajo')
-    calificacion      = models.CharField(max_length=15, choices=SCORE_CHOICES, default='5', db_index=True, null=False)
-    comentario    = models.CharField(max_length=50, blank=True)
+    calificacion      = models.CharField(max_length=15, choices=SCORE_CHOICES, db_index=True, null=False)
+    comentario    = models.TextField(max_length=50, blank=True)
     fecha_registro   = models.DateField(default=timezone.now, blank=False)
     
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Si la instancia es nueva (sin PK)
+            # OT actualiza encuesta realizada
+            self.orden_trabajo.encuesta = True
+            self.orden_trabajo.save()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.usuario}"

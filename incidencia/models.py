@@ -21,7 +21,7 @@ class Incidencia(models.Model):
     fecha_reporte = models.DateTimeField(auto_now_add=True)
     nivel_prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, db_index=True)
     estado = models.CharField(max_length=12, choices=ESTADO_CHOICES, default='reportada', db_index=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='incidencias_reportadas')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='usuario_reporta')
     OT = models.ForeignKey(OrdenTrabajo, on_delete=models.PROTECT,  related_name='OT_incidencia')
 
     class Meta:
